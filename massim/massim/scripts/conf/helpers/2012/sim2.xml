@@ -1,0 +1,14 @@
+<simulation
+        id="2012-tournament-sim2"
+		>
+			<configuration numberOfNodes="240">
+			
+			&actions;
+			&roles;	
+			&achievements;
+				
+			</configuration>
+			
+			&agents;
+			
+		</simulation>

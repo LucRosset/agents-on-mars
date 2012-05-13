@@ -5,7 +5,7 @@ SET CONF=conf/%SIM_FILE%
 SET PACKAGE=../target/agentcontest-2012-1.0.3.jar
 SET HOSTNAME=localhost
 
-CD massim/massim/scripts
+CD ../massim/massim/scripts
 
 MKDIR backup
 

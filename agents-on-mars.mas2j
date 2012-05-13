@@ -1,0 +1,24 @@
+/*
+  Agents on mars - Project for the  Multi-Agent Programming Contest 2012.
+  
+  Authors: Mariana Ramos Franco
+*/
+
+MAS agents_on_mars {
+   infrastructure: Centralised
+
+   environment: c4jason.CartagoEnvironment("infrastructure","protocol(rmi)","service(rmi,'localhost:21000')")	// the environment is cartago
+
+   agents:
+		explorer	agentArchClass c4jason.CAgentArch; // agents have a customised architecture to use cartago
+        inspector	agentArchClass c4jason.CAgentArch;
+        repairer	agentArchClass c4jason.CAgentArch;
+        saboteur	agentArchClass c4jason.CAgentArch;
+        sentinel	agentArchClass c4jason.CAgentArch;
+
+   classpath: "lib/moise.jar";		// moise: where the artifacts are included
+   			  "lib/c4jason.jar";	// jason-cartago integration
+   			  "lib/cartago.jar";	// cartago: platform for artifacts
+
+   aslSourcePath: "src/asl"; 
+}

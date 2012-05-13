@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interfaceConfig scenario="mars2012" host="localhost" port="12300" scheduling="no" times="no"
+notifications="no" timeout="5000" queued="yes" statisticsFile="no" statisticsShell="no">
+  <entities>
+    <entity name="connectionA1" username="PoliUSPTeam1" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA2" username="PoliUSPTeam2" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA3" username="PoliUSPTeam3" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA4" username="PoliUSPTeam4" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA5" username="PoliUSPTeam5" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA6" username="PoliUSPTeam6" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA7" username="PoliUSPTeam7" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA8" username="PoliUSPTeam8" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA9" username="PoliUSPTeam9" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA10" username="PoliUSPTeam10" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA11" username="PoliUSPTeam11" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA12" username="PoliUSPTeam12" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA13" username="PoliUSPTeam13" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA14" username="PoliUSPTeam14" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA15" username="PoliUSPTeam15" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA16" username="PoliUSPTeam16" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA17" username="PoliUSPTeam17" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA18" username="PoliUSPTeam18" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA19" username="PoliUSPTeam19" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="connectionA20" username="PoliUSPTeam20" password="pwd" iilang="yes" xml="yes"/>
+  </entities>
+</interfaceConfig>

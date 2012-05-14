@@ -2,25 +2,25 @@
 <interfaceConfig scenario="mars2012" host="localhost" port="12300" scheduling="no" times="no"
 notifications="no" timeout="5000" queued="yes" statisticsFile="no" statisticsShell="no">
   <entities>
-    <entity name="connectionA1" username="PoliUSPTeam1" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA2" username="PoliUSPTeam2" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA3" username="PoliUSPTeam3" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA4" username="PoliUSPTeam4" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA5" username="PoliUSPTeam5" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA6" username="PoliUSPTeam6" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA7" username="PoliUSPTeam7" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA8" username="PoliUSPTeam8" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA9" username="PoliUSPTeam9" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA10" username="PoliUSPTeam10" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA11" username="PoliUSPTeam11" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA12" username="PoliUSPTeam12" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA13" username="PoliUSPTeam13" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA14" username="PoliUSPTeam14" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA15" username="PoliUSPTeam15" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA16" username="PoliUSPTeam16" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA17" username="PoliUSPTeam17" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA18" username="PoliUSPTeam18" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA19" username="PoliUSPTeam19" password="pwd" iilang="yes" xml="yes"/>
-    <entity name="connectionA20" username="PoliUSPTeam20" password="pwd" iilang="yes" xml="yes"/>
+    <entity name="explorer1" username="a1" password="1" iilang="no" xml="no"/>
+    <entity name="explorer2" username="a2" password="1" iilang="no" xml="no"/>
+    <entity name="explorer3" username="a3" password="1" iilang="no" xml="no"/>
+    <entity name="explorer4" username="a4" password="1" iilang="no" xml="no"/>
+    <entity name="inspector1" username="a5" password="1" iilang="no" xml="no"/>
+    <entity name="inspector2" username="a6" password="1" iilang="no" xml="no"/>
+    <entity name="inspector3" username="a7" password="1" iilang="no" xml="no"/>
+    <entity name="inspector4" username="a8" password="1" iilang="no" xml="no"/>
+    <entity name="repairer1" username="a9" password="1" iilang="no" xml="no"/>
+    <entity name="repairer2" username="a10" password="1" iilang="no" xml="no"/>
+    <entity name="repairer3" username="a11" password="1" iilang="no" xml="no"/>
+    <entity name="repairer4" username="a12" password="1" iilang="no" xml="no"/>
+    <entity name="saboteur1" username="a13" password="1" iilang="no" xml="no"/>
+    <entity name="saboteur2" username="a14" password="1" iilang="no" xml="no"/>
+    <entity name="saboteur3" username="a15" password="1" iilang="no" xml="no"/>
+    <entity name="saboteur4" username="a16" password="1" iilang="no" xml="no"/>
+    <entity name="sentinel1" username="a17" password="1" iilang="no" xml="no"/>
+    <entity name="sentinel2" username="a18" password="1" iilang="no" xml="no"/>
+    <entity name="sentinel3" username="a19" password="1" iilang="no" xml="no"/>
+    <entity name="sentinel4" username="a20" password="1" iilang="no" xml="no"/>
   </entities>
 </interfaceConfig>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="http://moise.sourceforge.net/xml/os.xsl" type="text/xsl" ?>
+
+<organisational-specification 
+
+    id="agents_on_mars"
+    os-version="0.1"
+  
+    xmlns='http://moise.sourceforge.net/os'
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:schemaLocation='http://moise.sourceforge.net/os
+                        http://moise.sourceforge.net/xml/os.xsd' >
+    
+    <structural-specification>
+
+        <role-definitions>
+            <role id="marcian" />
+            <role id="explorer"> <extends role="marcian"/> </role>
+            <role id="inspector"> <extends role="marcian"/> </role>
+            <role id="repairer"> <extends role="marcian"/> </role>
+            <role id="saboteur"> <extends role="marcian"/> </role>
+            <role id="sentinel"> <extends role="marcian"/> </role>
+        </role-definitions>
+
+        <group-specification id="team" monitoring-scheme="monitoringSch">
+            <roles>
+            	<role id="marcian" min="0" max="20" />
+                <role id="explorer" min="0" max="20" />
+                <role id="inspector" min="0" max="20" />
+                <role id="repairer" min="0" max="20" />
+                <role id="saboteur" min="0" max="20" />
+                <role id="sentinel" min="0" max="20" />
+            </roles>
+            <links>
+                <link from="marcian" to="marcian" type="communication"
+                      scope="intra-group" extends-subgroups="true" bi-dir="true"/>
+            </links>
+        </group-specification>
+    </structural-specification>
+
+
+
+    <functional-specification>
+        <scheme id="marsSch" monitoring-scheme="monitoringSch">
+
+            <goal id="wp" ttf="5 seconds">
+                <plan operator="sequence" >
+                    <goal id="fdv" ds="First Draft Version">
+                        <plan operator="sequence">
+                            <goal id="wtitle"     ttf="1 day" ds="Write a title"/>
+                            <goal id="wabs"       ttf="1 day" ds="Write an abstract"/>
+                            <goal id="wsectitles" ttf="1 day" ds="Write the sections' title" />
+                        </plan>
+                    </goal>
+                    <goal id="sv" ds="Submission Version">
+                        <plan operator="sequence">
+                            <goal id="wsecs"  ttf="7 days" ds="Write sections"/>
+                            <goal id="finish" ds="Finish paper">
+                                <plan operator="parallel">
+                                    <goal id="wconc"  ttf="1 day"  ds="Write a conclusion"/>
+                                    <goal id="wrefs"  ttf="1 hour" ds="Complete references and link them to text"/>
+                                </plan>
+                            </goal>
+                        </plan>
+                    </goal>
+                </plan>
+            </goal>
+
+            <mission id="mColaborator" min="1" max="5">
+                <goal id="wsecs"/>
+            </mission>
+
+            <mission id="mManager" min="1" max="1">
+                <goal id="wabs"/>
+                <goal id="wp"/>
+                <goal id="wtitle"/>
+                <goal id="wconc"/>
+                <goal id="wsectitles"/>
+            </mission>
+
+            <mission id="mBib" min="1" max="1">
+                <goal id="wrefs"/>
+                <preferred mission="mColaborator"/>
+                <preferred mission="mManager"/>
+            </mission>
+        </scheme>
+        
+        <scheme id="monitoringSch">
+            <goal id="monitor">
+                <plan operator="choice">
+                    <goal id="sanction" ds="Sanction the agent that is not doing its job!"/>
+                    <goal id="reward"   ds="Reward some agent for doing a good job!"/>
+                </plan>
+            </goal>
+            <mission id="ms" min="1" max="1" >
+                <goal id="sanction"/>
+            </mission>
+            <mission id="mr" min="1" max="1" >
+                <goal id="reward"/>
+            </mission>
+        </scheme>
+    </functional-specification>
+
+    <normative-specification>
+        <norm id = "n1" 
+                          type="permission" 
+                          role="marcian" mission="mManager" />
+        <norm id = "n2" 
+                          type="obligation" 
+                          role="marcian" mission="mBib"             
+                          time-constraint="1 day"  />
+        <norm id = "n3" 
+                          type="obligation" 
+                          role="marcian" mission="mColaborator"
+                          time-constraint="1 day"  />
+        <norm id = "n4" 
+                          type="obligation" 
+                          condition="unfulfilled(obligation(_,n2,_,_))" 
+                          role="marcian" mission="ms" 
+                          time-constraint="3 hours"/>
+        <norm id = "n5" 
+                          type="obligation" 
+                          condition="fulfilled(obligation(_,n3,_,_))" 
+                          role="marcian" mission="mr" 
+                          time-constraint="3 hours"/>
+        
+        <norm id = "n6" 
+                          type="obligation" condition="#goal_non_compliance" 
+                          role="marcian" mission="ms" 
+                          time-constraint="3 hours"/>
+        <norm id = "n7" 
+                          type="obligation" condition="#role_compatibility" 
+                          role="marcian" mission="ms" 
+                          time-constraint="30 minutes"/>
+        <norm id = "n8" 
+                          type="obligation" condition="#mission_cardinality" 
+                          role="marcian" mission="ms" 
+                          time-constraint="1 hour"/>
+    </normative-specification>
+</organisational-specification>
+

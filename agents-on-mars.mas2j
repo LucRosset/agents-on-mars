@@ -10,16 +10,10 @@ MAS agents_on_mars {
    environment: env.MarsEnv("infrastructure","protocol(rmi)","service(rmi,'localhost:21000')")	// the environment is cartago
 
    agents:
-		explorer	#4
-					agentArchClass arch.MarcianArch; // agents have a customised architecture to use cartago
-        inspector	#4
-        			agentArchClass arch.MarcianArch;
-        repairer	#4
-        			agentArchClass arch.MarcianArch;
-        saboteur	#4
-        			agentArchClass arch.MarcianArch;
-        sentinel	#4
-        			agentArchClass arch.MarcianArch;
+		marcian		#2
+					agentArchClass arch.MarcianArch;		// agents have a customised architecture
+					//beliefBaseClass jason.bb.IndexedBB("visibleEdge(key,key)", "visibleVertex(key,_)",
+					//"visibleEntity(key,_,_,_)");
 
    classpath: "lib/moise.jar";		// moise: where the artifacts are included
    			  "lib/c4jason.jar";	// jason-cartago integration

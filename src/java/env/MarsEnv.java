@@ -3,7 +3,6 @@ package env;
 import static jason.eis.Translator.literalToAction;
 import static jason.eis.Translator.perceptToLiteral;
 import jason.JasonException;
-import jason.asSyntax.ASSyntax;
 import jason.asSyntax.Literal;
 import jason.asSyntax.StringTerm;
 import jason.asSyntax.Structure;
@@ -106,7 +105,7 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
 	@Override
     public List<Literal> getPercepts(String agName) {
         List<Literal> percepts = super.getPercepts(agName);  
-        clearPercepts(agName);
+//        clearPercepts(agName);
         if (percepts == null) 
             percepts = new ArrayList<Literal>();
 

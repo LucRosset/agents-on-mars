@@ -2,8 +2,6 @@
 
 /* Initial beliefs and rules */
 
-role("Marcian").
-
 /* Initial goals */
 
 !start.
@@ -51,7 +49,10 @@ role("Marcian").
 			.print("scheme is linked to responsible group").
 -!run_scheme(S)[error(I),error_msg(M)]
 	<- 	.print("failure creating scheme ",S," -- ",I,": ",M).
-	
+
+
+// to start to play a role
 +!playRole
 	:	role(R)
-	<- adoptRole(marcian)[artifact_id(GrArtId)].
+	<- 	jia.to_lower_case(R,S);
+			adoptRole(S)[artifact_id(GrArtId)].

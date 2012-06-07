@@ -137,7 +137,6 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
                 //System.out.println(agName+" doing "+action.getTerm(0)+" as "+entity);
                 ei.performAction(agName, literalToAction((Literal)action.getTerm(0)), entity);                  
             } else {
-                //Map<String,Percept> r = 
                 ei.performAction(agName, literalToAction(action));
                 //logger.info("***"+r+" for "+action);
             }

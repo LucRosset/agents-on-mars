@@ -11,9 +11,11 @@ MAS agents_on_mars {
 
    agents:
 		marcian		#2
-					agentArchClass arch.MarcianArch;		// agents have a customised architecture
-					//beliefBaseClass jason.bb.IndexedBB("visibleEdge(key,key)", "visibleVertex(key,_)",
-					//"visibleEntity(key,_,_,_)");
+					agentArchClass arch.MarcianArch		// agents have a customised architecture
+					beliefBaseClass jason.bb.IndexedBB("deadline(_)", "lastAction(_)", "lastActionParam(_)",
+					"lastActionResult(_)", "lastStepScore(_)", "money(_)", "role(_)", "score(_)", "step(_)",
+					"timestamp(_)", "visibleEdge(key,key)", "visibleEntity(key,_,_,_)",
+					"visibleVertex(key,_)", "zoneScore(_)", "zonesScore(_)");
 
    classpath: "lib/moise.jar";		// moise: where the artifacts are included
    			  "lib/c4jason.jar";	// jason-cartago integration

@@ -1,10 +1,13 @@
 package arch;
 
 import jason.RevisionFailedException;
+import jason.asSemantics.ActionExec;
 import jason.asSyntax.Literal;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import cartago.Op;
 
 import c4jason.CAgentArch;
 import env.MarsEnv;
@@ -22,6 +25,7 @@ public class MarcianArch extends CAgentArch {
 
 	public MarcianArch() {
 		super();
+		logger = Logger.getLogger("MarcianArch");
 		env = MarsEnv.getInstance();
 	}
 
@@ -46,4 +50,22 @@ public class MarcianArch extends CAgentArch {
 		 */
         return null;
     }
+
+	@Override
+	public void act(ActionExec actionExec, List<ActionExec> feedback) {
+		String action = actionExec.getActionTerm().getFunctor();
+		if (action.equals("skip") || action.equals("goto") || action.equals("probe")
+				|| action.equals("survey") || action.equals("buy") || action.equals("recharge")) {
+			boolean result = env.executeAction(this.getAgName(), actionExec.getActionTerm());
+			actionExec.setResult(result);
+			if (result) {
+				Op op = new Op(action);
+				notifyActionSuccess(op, actionExec.getActionTerm(), actionExec);
+			} else {
+				notifyActionFailure(actionExec, null, "Failled to performe the action: " + action);
+			}
+		} else {
+			super.act(actionExec, feedback);
+		}
+	}
 }

@@ -1,5 +1,12 @@
 // Agent Marcian
 
+// include role plans for agents
+{ include("explorer.asl") }
+{ include("inspector.asl") }
+{ include("repairer.asl") }
+{ include("saboteur.asl") }
+{ include("sentinel.asl") }
+
 /* Initial beliefs and rules */
 
 /* Initial goals */
@@ -51,8 +58,27 @@
 	<- 	.print("failure creating scheme ",S," -- ",I,": ",M).
 
 
-// to start to play a role
+// keep focused on schemes my groups are responsible for
++schemes(L)
+	<-	for ( .member(S,L) ) {
+				lookupArtifact(S,ArtId);
+				focus(ArtId)
+      }.
+
+// plan to start to play a role
 +!playRole
 	:	role(R)
 	<- 	jia.to_lower_case(R,S);
-			adoptRole(S)[artifact_id(GrArtId)].
+			adoptRole(S)[artifact_id(GrArtId)];
+			.print("I'll play role ",S).
+
+-!playRole
+	<- 	.wait(100);
+			!playRole.
+
+
+// plans to handle obligations
++obligation(Ag,Norm,committed(Ag,Mission,Scheme),Deadline)
+    : .my_name(Ag)
+   <- .print("I am obliged to commit to ",Mission," on ",Scheme);
+      commitMission(Mission)[artifact_name(Scheme)].

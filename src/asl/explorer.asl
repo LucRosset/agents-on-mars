@@ -6,36 +6,59 @@
 is_energy_goal :- energy(MyE) & maxEnergy(Max) & MyE < Max/3.
 is_probe_goal  :- position(MyV) & not probedVertex(MyV,_).
 is_buy_goal    :- money(M) & M >= 10.
-is_survey_goal :- position(MyV) & edge(MyV,_,unknown).  // some edge to adjacent vertex is not surveyed
+//is_survey_goal :- position(MyV) & edge(MyV,_,unknown).  // some edge to adjacent vertex is not surveyed
                   
 /* Initial goals */
 
 +simStart
-   <- !select_goal.
+	:	role(Explorer)
+	<-	!select_explorer_goal.
    
 +simEnd 
    <- .abolish(_); // clean all BB
       .drop_all_desires.
 	  
 
-+!select_goal : is_energy_goal <- !init_goal(be_at_full_charge); !!select_goal.
-+!select_goal : is_probe_goal  <- !init_goal(probe);             !!select_goal.
-+!select_goal : is_survey_goal <- !init_goal(survey);            !!select_goal.
-+!select_goal : is_buy_goal    <- !init_goal(buy(battery));      !!select_goal.
-+!select_goal                  <- !init_goal(random_walk);       !!select_goal.
--!select_goal[error_msg(M)]    <- .print("Error ",M);            !!select_goal.
++!select_explorer_goal
+	:	is_energy_goal
+	<-	!init_goal(be_at_full_charge);
+			!!select_explorer_goal.
+
++!select_explorer_goal
+	: is_probe_goal
+	<-	!init_goal(probe);
+			!!select_explorer_goal.
+
+//+!select_explorer_goal
+//	: is_survey_goal
+//	<-	!init_goal(survey);
+//			!!select_explorer_goal.
+
++!select_explorer_goal
+	:	is_buy_goal
+	<-	!init_goal(buy(battery));
+			!!select_explorer_goal.
+
++!select_explorer_goal
+	<- 	!init_goal(random_walk);
+			!!select_explorer_goal.
+
+-!select_explorer_goal[error_msg(M)]
+	<-	.print("Error ",M);
+			!!select_explorer_goal.
 
 
 +!init_goal(G)
-    : step(S) & position(V) & energy(E) & maxEnergy(Max)
-   <- .print("I am at ",V," (",E,"/",Max,"), the goal for step ",S," is ",G);
+	:	step(S) & position(V) & energy(E) & maxEnergy(Max)
+	<-	.print("I am at ",V," (",E,"/",Max,"), the goal for step ",S," is ",G);
       !G.
-+!init_goal(_)
-   <- .print("No step yet... wait a bit");
-      .wait(500);
-	  !select_goal.
 
-	  
++!init_goal(_)
+	<-	.print("No step yet... wait a bit");
+      .wait(500);
+	  	!select_explorer_goal.
+
+
 /* Plans for energy */
 
 +!be_at_full_charge 
@@ -72,11 +95,21 @@ is_survey_goal :- position(MyV) & edge(MyV,_,unknown).  // some edge to adjacent
 
 +!random_walk 
     : position(MyV) // my location
-   <- .setof(V, edge(MyV,V,_), Options);
-      .nth(math.random(.length(Options)), Options, Op);
-      .print("Random walk options ",Options," going to ",Op);
-	  !do_and_wait_next_step(goto(Op)).
-	  
+   <- .setof(V, visibleEdge(MyV,V), Options);
+   		if (.length(Options,0)) {
+   			.setof(X, visibleEdge(X,MyV), Optionss);
+   			.nth(math.random(.length(Optionss)), Optionss, Ops);
+   			.print("Random walk options ",Optionss," going to ",Ops);
+	  		!do_and_wait_next_step(goto(Ops))
+   		};
+   		if (not .length(Options,0)) {
+   			.nth(math.random(.length(Options)), Options, Op);
+   			.print("Random walk options ",Options," going to ",Op);
+	  		!do_and_wait_next_step(goto(Op))
+   		}.
+
+-!random_walk[error(I),error_msg(M)]
+	<-	.print("failure in random_walk! ",I,": ",M).
 	  
 /* general plans */
 
@@ -93,15 +126,15 @@ is_survey_goal :- position(MyV) & edge(MyV,_,unknown).  // some edge to adjacent
 
 
 // store perceived probed vertexs in the BB
-+probedVertex(L,V) <- +probedVertex(L,V). 
+//+probedVertex(L,V) <- +probedVertex(L,V). 
 
 // store edges in the BB
-@lve1[atomic]
-+visibleEdge(V1,V2)    
-   <- +edge(V1,V2,unknown);
-      +edge(V2,V1,unknown).
+//@lve1[atomic]
+//+visibleEdge(V1,V2)    
+//   <- +edge(V1,V2,unknown);
+//      +edge(V2,V1,unknown).
 	  
-@lve12[atomic]
-+surveyedEdge(V1,V2,C) 
-   <- -edge(V1,V2,_); -edge(V2,V1,_);
-      +edge(V1,V2,C); +edge(V2,V1,C).
+//@lve12[atomic]
+//+surveyedEdge(V1,V2,C) 
+//   <- -edge(V1,V2,_); -edge(V2,V1,_);
+//      +edge(V1,V2,C); +edge(V2,V1,C).

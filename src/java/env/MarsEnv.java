@@ -134,16 +134,16 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
             // check case of action on an entity: ae(<action>,<entity as string>)
             if (action.getArity() == 2 && action.getFunctor().equals("ae") && action.getTerm(1).isString()) {
                 String entity = ((StringTerm)action.getTerm(1)).getString();
-                //System.out.println(agName+" doing "+action.getTerm(0)+" as "+entity);
+//                System.out.println(agName+" doing "+action.getTerm(0)+" as "+entity);
                 ei.performAction(agName, literalToAction((Literal)action.getTerm(0)), entity);                  
             } else {
                 ei.performAction(agName, literalToAction(action));
-                //logger.info("***"+r+" for "+action);
+//                logger.info("***"+r+" for "+action);
             }
-            //for (ActionResult r: result) {
-            //    if (r.getName().equals("success")) 
+//            for (ActionResult r: result) {
+//                if (r.getName().equals("success")) 
             return true;
-            //}
+//            }
         } catch (Exception e) {
             //e.printStackTrace();
             logger.warning("Error in action '"+action+"' by "+agName+": "+e);

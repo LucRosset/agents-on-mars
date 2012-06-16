@@ -33,9 +33,9 @@ public class MarcianArch extends CAgentArch {
     public List<Literal> perceive() {
         super.perceive();
         List<Literal> eisPercepts = env.getPercepts(getAgName());
-        if (!eisPercepts.isEmpty()) {
-        	logger.info("[" + getAgName() + "] Percepts: " + eisPercepts);
-        }
+//        if (!eisPercepts.isEmpty()) {
+//        	logger.info("[" + getAgName() + "] Percepts: " + eisPercepts);
+//        }
         for (Literal percept : eisPercepts) {
         	try {
 				getTS().getAg().addBel(percept);

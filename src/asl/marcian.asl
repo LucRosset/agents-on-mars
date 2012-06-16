@@ -82,3 +82,5 @@
     : .my_name(Ag)
    <- .print("I am obliged to commit to ",Mission," on ",Scheme);
       commitMission(Mission)[artifact_name(Scheme)].
+
+	

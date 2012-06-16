@@ -2,8 +2,10 @@ package arch;
 
 import jason.RevisionFailedException;
 import jason.asSemantics.ActionExec;
+import jason.asSemantics.Message;
 import jason.asSyntax.Literal;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,10 +40,26 @@ public class MarcianArch extends CAgentArch {
 //        }
         for (Literal percept : eisPercepts) {
         	try {
+        		// broadcast only new percepts
+        		// TODO verify if all the edges and vertex are known before try to broadcast
+        		// TODO broadcast my position for the other agents
+        		String  ps = percept.toString();
+        		if (ps.startsWith("visibleEdge") || ps.startsWith("visibleEntity")
+        				|| ps.startsWith("visibleVertex") || ps.startsWith("probedVertex")
+        				|| ps.startsWith("surveyedEdge")) {
+        			if (null == getTS().getAg().getBB().contains(percept)) {
+           			 	Message m = new Message("tell", null, null, percept);
+           			 	broadcast(m);
+        			}
+        		}
+        		// add percept to the base
 				getTS().getAg().addBel(percept);
 			} catch (RevisionFailedException e) {
 				// e.printStackTrace();
 				logger.warning("Error when adding percepts from eis to the belief base.");
+			} catch (Exception e) {
+				// e.printStackTrace();
+				logger.warning("Error on perceive.");
 			}
         }
         /*
@@ -70,5 +88,18 @@ public class MarcianArch extends CAgentArch {
 		} else {
 			super.act(actionExec, feedback);
 		}
+	}
+
+	@Override
+    public void checkMail() {
+		super.checkMail();
+		Iterator<Message> im = getTS().getC().getMailBox().iterator();
+		while (im.hasNext()) {
+			Message m  = im.next();
+            String  ms = m.getPropCont().toString();
+//            logger.info("[" + getAgName() + "] receved mail: " + ms);
+//            im.remove();
+		}
+		
 	}
 }

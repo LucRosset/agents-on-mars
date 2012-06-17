@@ -42,7 +42,6 @@ public class MarcianArch extends CAgentArch {
         	try {
         		// broadcast only new percepts
         		// TODO verify if all the edges and vertex are known before try to broadcast
-        		// TODO broadcast my position for the other agents
         		String  ps = percept.toString();
         		if (ps.startsWith("visibleEdge") || ps.startsWith("visibleEntity")
         				|| ps.startsWith("visibleVertex") || ps.startsWith("probedVertex")
@@ -50,6 +49,13 @@ public class MarcianArch extends CAgentArch {
         			if (null == getTS().getAg().getBB().contains(percept)) {
            			 	Message m = new Message("tell", null, null, percept);
            			 	broadcast(m);
+        			}
+        		} else if (ps.startsWith("position")) {
+        			if (null == getTS().getAg().getBB().contains(percept)) {
+        				Message m = new Message("tell", null, null,
+        						"agentPosition(" + getAgName() + "," +
+        								percept.getTerm(0).toString() + ")");
+        				broadcast(m);
         			}
         		}
         		// add percept to the base

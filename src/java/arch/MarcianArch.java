@@ -21,14 +21,16 @@ import env.MarsEnv;
  */
 public class MarcianArch extends CAgentArch {
 
-	protected MarsEnv env = null;
+	private MarsEnv env;
+	private WorldModel model;
 
-	protected Logger logger;
+	private Logger logger;
 
 	public MarcianArch() {
 		super();
 		logger = Logger.getLogger("MarcianArch");
 		env = MarsEnv.getInstance();
+		model = new WorldModel();
 	}
 
 	@Override
@@ -38,6 +40,7 @@ public class MarcianArch extends CAgentArch {
 //        if (!eisPercepts.isEmpty()) {
 //        	logger.info("[" + getAgName() + "] Percepts: " + eisPercepts);
 //        }
+        eisPercepts = model.update(eisPercepts);
         for (Literal percept : eisPercepts) {
         	try {
         		// broadcast only new percepts
@@ -46,10 +49,10 @@ public class MarcianArch extends CAgentArch {
         		if (ps.startsWith("visibleEdge") || ps.startsWith("visibleEntity")
         				|| ps.startsWith("visibleVertex") || ps.startsWith("probedVertex")
         				|| ps.startsWith("surveyedEdge")) {
-        			if (null == getTS().getAg().getBB().contains(percept)) {
+//        			if (null == getTS().getAg().getBB().contains(percept)) {
            			 	Message m = new Message("tell", null, null, percept);
            			 	broadcast(m);
-        			}
+//        			}
         		} else if (ps.startsWith("position")) {
         			if (null == getTS().getAg().getBB().contains(percept)) {
         				Message m = new Message("tell", null, null,

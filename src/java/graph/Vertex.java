@@ -12,6 +12,7 @@ public class Vertex {
 
 	private int id;
 	private String team = "none";
+	private int value = -1;
 
 	private Set<Vertex> neighbors; 
 
@@ -42,6 +43,14 @@ public class Vertex {
 		this.team = team;
 	}
 
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
 	@Override
 	public boolean equals(Object object) {
 		if (null == object) {
@@ -63,6 +72,6 @@ public class Vertex {
 
 	@Override
 	public String toString() {
-		return "vertex(" + id + "," + team + ")"; 
+		return "vertex(" + id + "," + team + "," + value +")"; 
 	}
 }

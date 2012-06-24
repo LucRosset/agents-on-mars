@@ -5,14 +5,16 @@ import jason.asSemantics.ActionExec;
 import jason.asSemantics.Message;
 import jason.asSyntax.Literal;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 import java.util.logging.Logger;
 
-import cartago.Op;
-
 import c4jason.CAgentArch;
+import cartago.Op;
 import env.MarsEnv;
+import env.Percept;
 
 /**
  * Common architecture for the agents.
@@ -44,23 +46,28 @@ public class MarcianArch extends CAgentArch {
         for (Literal percept : eisPercepts) {
         	try {
         		// broadcast only new percepts
-        		// TODO verify if all the edges and vertex are known before try to broadcast
-        		String  ps = percept.toString();
-        		if (ps.startsWith("visibleEdge") || ps.startsWith("visibleEntity")
-        				|| ps.startsWith("visibleVertex") || ps.startsWith("probedVertex")
-        				|| ps.startsWith("surveyedEdge")) {
+        		String  p = percept.getFunctor();
+        		if (p.equals("visibleEdge") || p.equals("visibleEntity")
+        				|| p.equals("visibleVertex") || p.equals("probedVertex")
+        				|| p.equals("surveyedEdge")) {
 //        			if (null == getTS().getAg().getBB().contains(percept)) {
            			 	Message m = new Message("tell", null, null, percept);
            			 	broadcast(m);
 //        			}
-        		} else if (ps.startsWith("position")) {
+        		} else if (p.equals("position")) {
         			if (null == getTS().getAg().getBB().contains(percept)) {
         				Message m = new Message("tell", null, null,
-        						"agentPosition(" + getAgName() + "," +
+        						Percept.coworkerPosition + "(" + getAgName() + "," +
         								percept.getTerm(0).toString() + ")");
         				broadcast(m);
         			}
+        		} else if (p.equals("role")) {
+        				Message m = new Message("tell", null, null,
+        						Percept.coworkerRole + "(" + getAgName() + "," +
+        								percept.getTerm(0).toString() + ")");
+        				broadcast(m);
         		}
+        		// TODO maybe not all percepts need to be added to the base
         		// add percept to the base
 				getTS().getAg().addBel(percept);
 			} catch (RevisionFailedException e) {
@@ -71,6 +78,7 @@ public class MarcianArch extends CAgentArch {
 				logger.warning("Error on perceive.");
 			}
         }
+
         /*
 		 * THE METHOD MUST RETURN NULL:
 		 * since the percept semantics is different (event vs. state),
@@ -102,13 +110,23 @@ public class MarcianArch extends CAgentArch {
 	@Override
     public void checkMail() {
 		super.checkMail();
-		Iterator<Message> im = getTS().getC().getMailBox().iterator();
-		while (im.hasNext()) {
-			Message m  = im.next();
-            String  ms = m.getPropCont().toString();
+//		Iterator<Message> im = getTS().getC().getMailBox().iterator();
+//		while (im.hasNext()) {
+//			Message m  = im.next();
+//            String  ms = m.getPropCont().toString();
 //            logger.info("[" + getAgName() + "] receved mail: " + ms);
 //            im.remove();
+//		}
+		List<Literal> percepts = convertMessageQueueToLiteralList(getTS().getC().getMailBox());
+		model.update(percepts);
+	}
+
+	private List<Literal> convertMessageQueueToLiteralList(Queue<Message> messages) {
+		List<Literal> literals = new ArrayList<Literal>();
+		for (Message message : messages) {
+			Literal  p = Literal.parseLiteral(message.getPropCont().toString());
+			literals.add(p);
 		}
-		
+		return literals;
 	}
 }

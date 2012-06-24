@@ -12,4 +12,7 @@ public class Percept {
 	public final static String probedVertex = "probedVertex";
 	public final static String surveyedEdge = "surveyedEdge";
 
+	/* Team Percepts */
+	public final static String coworkerPosition = "coworkerPosition";
+	public final static String coworkerRole = "coworkerRole";
 }

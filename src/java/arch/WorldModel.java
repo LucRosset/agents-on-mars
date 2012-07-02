@@ -25,6 +25,8 @@ public class WorldModel {
 
 	private final static String myTeam = "A";
 
+	private Vertex myVertex;
+
 	public WorldModel() {
 		graph = new Graph();
 		opponents = new HashMap<String, Entity>();
@@ -102,6 +104,7 @@ public class WorldModel {
 			case Percept.coworkerPosition:
 				String aName = percept.getTerm(0).toString();
 				String position = percept.getTerm(1).toString();
+				position = position.replace("vertex", "");
 				int pos = Integer.parseInt(position);
 				if (!containsCoworker(aName, pos)) {
 					addCoworker(aName, pos);
@@ -116,6 +119,20 @@ public class WorldModel {
 				e.setRole(role);
 				coworkers.put(agName, e);
 				newPercepts.add(percept);
+				break;
+			case Percept.position:
+				String myPosition = percept.getTerm(0).toString();
+				myPosition = myPosition.replace("vertex", "");
+				int myPos = Integer.parseInt(myPosition);
+				if (null == myVertex || myVertex.getId() != myPos) {
+					Vertex vtx = graph.getVertices().get(myPos);
+					if (null == vtx) {
+						vtx = new Vertex(myPos, myTeam);
+						graph.addVertex(vtx);
+					}
+					myVertex = vtx;
+					newPercepts.add(percept);
+				}
 				break;
 			default:
 				newPercepts.add(percept);
@@ -169,7 +186,160 @@ public class WorldModel {
 		return false;
 	}
 
+	public List<Vertex> getBestVertices() {
+		List<Vertex> bestVertices = new ArrayList<Vertex>();
+		int bestValue = -1;
+		Set<Vertex> vertices = (Set<Vertex>) graph.getVertices().values();
+		for (Vertex v : vertices) {
+			if (v.getValue() > bestValue) {
+				bestValue = v.getValue();
+				bestVertices.clear();
+				bestVertices.add(v);
+			} else if (v.getValue() == bestValue) {
+				bestVertices.add(v);
+			}
+		}
+		return bestVertices;
+	}
+
+	public List<Vertex> getBestZone() {
+		graph.removeVerticesColor();
+		// step 1: coloring vertices that have agents standing on them
+		coloringVertices();
+		// step 2: coloring empty neighbors
+		coloringNeighbors();
+		// step 3: frontier
+		coloringIsolatedVertices();
+		// step 4: get zones
+		List<List<Vertex>> zones = graph.getZones();
+		// step 5: get best zone
+		return getBestZone(zones);
+	}
+
+	private void coloringVertices() {
+		// color my vertices
+		if (myVertex.getTeam().equals(myTeam)) {
+			myVertex.setColor(Vertex.BLUE);
+		} else if (!myVertex.getTeam().equals(Percept.TEAM_NONE)
+				&& !myVertex.getTeam().equals(Percept.TEAM_UNKNOWN)) {
+			myVertex.setColor(Vertex.RED);
+		}
+		for (Entity e : coworkers.values()) {
+			Vertex v = e.getVertex();
+			if (v.getTeam().equals(myTeam)) {
+				v.setColor(Vertex.BLUE);
+			} else if (!v.getTeam().equals(Percept.TEAM_NONE)
+					&& !v.getTeam().equals(Percept.TEAM_UNKNOWN)) {
+				v.setColor(Vertex.RED);
+			}
+		}
+		// color opponents vertices
+		for (Entity e : opponents.values()) {
+			Vertex v = e.getVertex();
+			if (!v.getTeam().equals(myTeam) && !v.getTeam().equals(Percept.TEAM_NONE)
+					&& !v.getTeam().equals(Percept.TEAM_UNKNOWN)) {
+				v.setColor(Vertex.RED);
+			}
+		}
+	}
+
+	private void coloringNeighbors() {
+		Set<Vertex> neighbors = myVertex.getNeighbors();
+		for (Vertex v : neighbors) {
+			if (v.getColor() == Vertex.WHITE) {
+				int numOfBlueNeighbors = 0;
+				int numOfRedNeighbors = 0;
+				for (Vertex vv : v.getNeighbors()) {
+					if (vv.getColor() == Vertex.BLUE) {
+						numOfBlueNeighbors++;
+					} else if (vv.getColor() == Vertex.RED) {
+						numOfRedNeighbors++;
+					}
+				}
+				if (numOfBlueNeighbors > numOfRedNeighbors && numOfBlueNeighbors > 1) {
+					v.setColor(Vertex.BLUE);
+				} else if (numOfBlueNeighbors < numOfRedNeighbors && numOfRedNeighbors > 1) {
+					v.setColor(Vertex.RED);
+				}
+			}
+		}
+		for (Entity e : coworkers.values()) {
+			neighbors = e.getVertex().getNeighbors();
+			for (Vertex v : neighbors) {
+				if (v.getColor() == Vertex.WHITE) {
+					int numOfBlueNeighbors = 0;
+					int numOfRedNeighbors = 0;
+					for (Vertex vv : v.getNeighbors()) {
+						if (vv.getColor() == Vertex.BLUE) {
+							numOfBlueNeighbors++;
+						} else if (vv.getColor() == Vertex.RED) {
+							numOfRedNeighbors++;
+						}
+					}
+					if (numOfBlueNeighbors > numOfRedNeighbors && numOfBlueNeighbors > 1) {
+						v.setColor(Vertex.BLUE);
+					} else if (numOfBlueNeighbors < numOfRedNeighbors && numOfRedNeighbors > 1) {
+						v.setColor(Vertex.RED);
+					}	
+				}
+			}
+		}
+	}
+
+	private void coloringIsolatedVertices() {
+		List<Vertex> notColoredVertices = graph.getNotColoredVertices();
+		for (Vertex v : notColoredVertices) {
+			boolean existsFrontier = true;
+			for (Entity e : opponents.values()) {
+				if (!graph.existsFrontier(v, e.getVertex())) {
+					existsFrontier = false;
+				}
+			}
+			if (existsFrontier) {
+				v.setColor(Vertex.BLUE);
+			}
+		}
+	}
+
+	private List<Vertex> getBestZone(List<List<Vertex>> zones) {
+		int bestZoneValue = -1;
+		List<Vertex> bestZone = null;
+		for (List<Vertex> zone : zones) {
+			int value = 0;
+			for (Vertex v : zone) {
+				value += v.getValue();
+			}
+			if (value > bestZoneValue) {
+				bestZone = zone;
+			}
+		}
+		return bestZone;
+	}
+
+	public List<Vertex> getZoneNeighbors(List<Vertex> zone) {
+		List<Vertex> neighbors = new ArrayList<Vertex>();
+		for (Vertex v : zone) {
+			for (Vertex neighbor : v.getNeighbors()) {
+				if (neighbor.getColor() != Vertex.BLUE && !neighbors.contains(neighbor)) {
+					neighbors.add(neighbor);
+				}
+			}
+		}
+		return neighbors;
+		
+	}
+
+	/* Getters and Setters */
+
 	public Graph getGraph() {
 		return graph;
+	}
+
+	public Vertex getMyVertex() {
+		return myVertex;
+	}
+
+	public void setMyVertex(Vertex myVertex) {
+		this.myVertex = myVertex;
 	}
 }

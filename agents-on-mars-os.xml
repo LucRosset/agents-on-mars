@@ -43,32 +43,38 @@
         <scheme id="marsSch">
             <goal id="win" ds="Win the Multiagent contest">
                 <plan operator="parallel" >
-                     <goal id="probe"	ds="Analyse the water well of new vertexs"/>
-                     <goal id="repair" 	ds="Repair damaged teammates"/>
-                     <goal id="attack"	ds="Attack opponents"/>
-                     <goal id="defend"	ds="Defend the conquered vertexs"/>
-                     <goal id="inspect"	ds="Inspect opponents"/>
+                	 <goal id="explorer_goal"	ds="Analyse the water well of new vertexs"/>
+                	 <goal id="inspector_goal"	ds="Analyse the water well of new vertexs"/>
+                	 <goal id="repairer_goal"	ds="Analyse the water well of new vertexs"/>
+                	 <goal id="saboteur_goal"	ds="Analyse the water well of new vertexs"/>
+                	 <goal id="sentinel_goal"	ds="Analyse the water well of new vertexs"/>
+                	 
+<!--                      <goal id="probe"	ds="Analyse the water well of new vertexs"/> -->
+<!--                      <goal id="repair" 	ds="Repair damaged teammates"/> -->
+<!--                      <goal id="attack"	ds="Attack opponents"/> -->
+<!--                      <goal id="defend"	ds="Defend the conquered vertexs"/> -->
+<!--                      <goal id="inspect"	ds="Inspect opponents"/> -->
                 </plan>
             </goal>
 
             <mission id="mExplorer" min="0" max="20">
-                <goal id="probe"/>               
+                <goal id="explorer_goal"/>               
             </mission>
 
 			<mission id="mRepairer" min="0" max="20">
-                <goal id="repair"/>               
+                <goal id="repairer_goal"/>               
             </mission>
 
             <mission id="mSaboteur" min="0" max="20">
-                <goal id="attack"/>               
+                <goal id="saboteur_goal"/>               
             </mission>
 
 			<mission id="mSentinel" min="0" max="20">
-                <goal id="defend"/>               
+                <goal id="sentinel_goal"/>               
             </mission>
 
 			<mission id="mInspector" min="0" max="20">
-                <goal id="inspect"/>               
+                <goal id="inspector_goal"/>               
             </mission>
         </scheme>
     </functional-specification>

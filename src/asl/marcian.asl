@@ -46,7 +46,7 @@
 	<- 	.wait(200);
 			!join.
 
-// to create the scheme
+// scheme creation
 +!run_scheme(S)
 	<- //makeArtifact(S,"ora4mas.nopl.MySchemeBoard",["wp-os.xml", writePaperSch, false, true ],SchArtId);
 			makeArtifact(S,"ora4mas.nopl.SchemeBoard",["agents-on-mars-os.xml", marsSch, false, false ],SchArtId);
@@ -69,6 +69,8 @@
 +!playRole
 	:	role(R)
 	<- 	jia.to_lower_case(R,S);
+		  -role(R);
+		  +role(S);
 			adoptRole(S)[artifact_id(GrArtId)];
 			.print("I'll play role ",S).
 
@@ -83,4 +85,28 @@
    <- .print("I am obliged to commit to ",Mission," on ",Scheme);
       commitMission(Mission)[artifact_name(Scheme)].
 
-	
++obligation(Ag,Norm,achieved(Scheme,Goal,Ag),DeadLine)
+    : .my_name(Ag)
+   <- .print("I am obliged to achieve goal ",Goal);
+      !Goal[scheme(Scheme)];
+      goalAchieved(Goal)[artifact_name(Scheme)].
+
+// temporary plans
+//+simStart
+//	:	not role(explorer)
+//	<-	!select_goal.
+
++!select_goal
+	:	is_energy_goal
+	<-	!init_goal(be_at_full_charge);
+			!!select_goal.
+
++!select_goal
+	:	is_move_goal
+	<-	!init_goal(move_to_target);
+			//!init_goal(random_walk);
+			!!select_goal.
+
++!select_goal
+	<- 	!init_goal(random_walk);
+			!!select_goal.

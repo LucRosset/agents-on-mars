@@ -6,7 +6,6 @@ import jason.asSemantics.Message;
 import jason.asSyntax.Literal;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.logging.Logger;
@@ -92,6 +91,9 @@ public class MarcianArch extends CAgentArch {
 	@Override
 	public void act(ActionExec actionExec, List<ActionExec> feedback) {
 		String action = actionExec.getActionTerm().getFunctor();
+		if (action.equals("goto")) {
+			System.out.println("break");
+		}
 		if (action.equals("skip") || action.equals("goto") || action.equals("probe")
 				|| action.equals("survey") || action.equals("buy") || action.equals("recharge")) {
 			boolean result = env.executeAction(this.getAgName(), actionExec.getActionTerm());
@@ -128,5 +130,9 @@ public class MarcianArch extends CAgentArch {
 			literals.add(p);
 		}
 		return literals;
+	}
+
+	public WorldModel getModel() {
+		return this.model;
 	}
 }

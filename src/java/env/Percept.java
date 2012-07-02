@@ -12,6 +12,11 @@ public class Percept {
 	public final static String probedVertex = "probedVertex";
 	public final static String surveyedEdge = "surveyedEdge";
 
+	public final static String position = "position";
+
+	public final static String TEAM_NONE = "none";
+	public final static String TEAM_UNKNOWN = "unknown";
+
 	/* Team Percepts */
 	public final static String coworkerPosition = "coworkerPosition";
 	public final static String coworkerRole = "coworkerRole";

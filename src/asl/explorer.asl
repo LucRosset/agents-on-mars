@@ -4,7 +4,8 @@
 
 // conditions for goal selection
 is_energy_goal :- energy(MyE) & maxEnergy(Max) & MyE < Max/3.
-is_probe_goal  :- position(MyV) & not probedVertex(MyV,_) & role(explorer).
+//is_probe_goal  :- position(MyV) & not probedVertex(MyV,_) & role(explorer).
+is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer).
 is_buy_goal    :- money(M) & M >= 10.
 is_move_goal	 :- target(X) & not position(X).
 //is_survey_goal :- position(MyV) & edge(MyV,_,unknown).  // some edge to adjacent vertex is not surveyed
@@ -14,7 +15,7 @@ is_move_goal	 :- target(X) & not position(X).
 //+simStart
 //	:	role(explorer)
 //	<-	!select_explorer_goal.
-   
+
 +simEnd 
    <- .abolish(_); // clean all BB
       .drop_all_desires.
@@ -143,8 +144,8 @@ is_move_goal	 :- target(X) & not position(X).
  	<- !find_closest(coworkerPosition(X,Y),Positions,NearPos);
  		 .print("send: ", X, ", " ,NearPos);
  	   .send(X,tell,target(NearPos));
- 	   .print("TLOC: ", .length(Positions));
- 	   .print("TAg: ", TAg);
+// 	   .print("TLOC: ", .length(Positions));
+// 	   .print("TAg: ", TAg);
  	   .delete(NearPos,Positions,TLoc);
  	   !send_target(TAg,TLoc).
 +!send_target([],Positions).
@@ -172,18 +173,6 @@ is_move_goal	 :- target(X) & not position(X).
 -!move_to_target[error(I),error_msg(M)]
 	<-	.print("failure in move_to_target! ",I,": ",M).
 
-/* general plans */
-
-// the following plan is used to send only one action each cycle
-+!do_and_wait_next_step(Act)
-    : step(S)
-   <- Act; // perform the action (i.e., send the action to the simulator)
-     !wait_next_step(S). // wait for the next step before going on
-
-+!wait_next_step(S)  : step(S+1).
-+!wait_next_step(S) <- .wait( { +step(_) }, 600, _); !wait_next_step(S).
-
-+step(S) <- .print("Current step is ", S).
 
 
 // store perceived probed vertexs in the BB

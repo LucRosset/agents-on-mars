@@ -3,6 +3,8 @@ package graph;
 import java.util.HashSet;
 import java.util.Set;
 
+import env.Percept;
+
 /**
  * Vertex class.
  * 
@@ -15,9 +17,11 @@ public class Vertex {
 	public final static int RED = -1;	// opponents color
 
 	private int id;
-	private String team = "unknown";
+	private String team = Percept.TEAM_UNKNOWN;
 	private int value = 1;
 	private int color = WHITE;
+
+	private boolean probed = false;
 
 	private int distance = 0;
 	private Vertex parent = null;
@@ -108,6 +112,14 @@ public class Vertex {
 
 	public void setParent(Vertex parent) {
 		this.parent = parent;
+	}
+
+	public boolean isProbed() {
+		return probed;
+	}
+
+	public void setProbed(boolean probed) {
+		this.probed = probed;
 	}
 
 	@Override

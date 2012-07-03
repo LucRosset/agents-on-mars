@@ -6,6 +6,7 @@ import jason.asSemantics.Message;
 import jason.asSyntax.Literal;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.logging.Logger;
@@ -59,16 +60,23 @@ public class MarcianArch extends CAgentArch {
         						Percept.coworkerPosition + "(" + getAgName() + "," +
         								percept.getTerm(0).toString() + ")");
         				broadcast(m);
+
+        				// add percept to the base
+        				getTS().getAg().addBel(percept);
         			}
         		} else if (p.equals("role")) {
         				Message m = new Message("tell", null, null,
         						Percept.coworkerRole + "(" + getAgName() + "," +
         								percept.getTerm(0).toString() + ")");
         				broadcast(m);
+
+        				// add percept to the base
+        				getTS().getAg().addBel(percept);
+        		} else {
+        			// TODO maybe not all percepts need to be added to the base
+            		// add percept to the base
+    				getTS().getAg().addBel(percept);
         		}
-        		// TODO maybe not all percepts need to be added to the base
-        		// add percept to the base
-				getTS().getAg().addBel(percept);
 			} catch (RevisionFailedException e) {
 				// e.printStackTrace();
 				logger.warning("Error when adding percepts from eis to the belief base.");
@@ -91,9 +99,6 @@ public class MarcianArch extends CAgentArch {
 	@Override
 	public void act(ActionExec actionExec, List<ActionExec> feedback) {
 		String action = actionExec.getActionTerm().getFunctor();
-		if (action.equals("goto")) {
-			System.out.println("break");
-		}
 		if (action.equals("skip") || action.equals("goto") || action.equals("probe")
 				|| action.equals("survey") || action.equals("buy") || action.equals("recharge")) {
 			boolean result = env.executeAction(this.getAgName(), actionExec.getActionTerm());
@@ -112,15 +117,25 @@ public class MarcianArch extends CAgentArch {
 	@Override
     public void checkMail() {
 		super.checkMail();
-//		Iterator<Message> im = getTS().getC().getMailBox().iterator();
-//		while (im.hasNext()) {
-//			Message m  = im.next();
-//            String  ms = m.getPropCont().toString();
-//            logger.info("[" + getAgName() + "] receved mail: " + ms);
-//            im.remove();
-//		}
 		List<Literal> percepts = convertMessageQueueToLiteralList(getTS().getC().getMailBox());
 		model.update(percepts);
+
+		Iterator<Message> im = getTS().getC().getMailBox().iterator();
+		while (im.hasNext()) {
+			Message message  = im.next();
+			Literal  percept = Literal.parseLiteral(message.getPropCont().toString());
+			String  p = percept.getFunctor();
+
+//            String  ms = message.getPropCont().toString();
+//            logger.info("[" + getAgName() + "] receved mail: " + ms);
+
+			if (p.equals("visibleEdge") || p.equals("visibleEntity")
+    				|| p.equals("visibleVertex") || p.equals("probedVertex")
+    				|| p.equals("surveyedEdge")) {
+				im.remove();
+			}
+		}
+
 	}
 
 	private List<Literal> convertMessageQueueToLiteralList(Queue<Message> messages) {

@@ -91,6 +91,20 @@
       !Goal[scheme(Scheme)];
       goalAchieved(Goal)[artifact_name(Scheme)].
 
+/* general plans */
+
+// the following plan is used to send only one action each cycle
++!do_and_wait_next_step(Act)
+    : step(S)
+   <- Act; // perform the action (i.e., send the action to the simulator)
+     !wait_next_step(S). // wait for the next step before going on
+
++!wait_next_step(S)  : step(S+1).
++!wait_next_step(S) <- .wait( { +step(_) }, 600, _); !wait_next_step(S).
+
++step(S) <- .print("Current step is ", S).
+
+
 // temporary plans
 //+simStart
 //	:	not role(explorer)

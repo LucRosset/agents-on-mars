@@ -295,10 +295,12 @@ public class Graph {
 	public void addVertexValue(int id, int value) {
 		if (vertices.containsKey(id)) {
 			Vertex v = vertices.get(id);
+			v.setProbed(true);
 			v.setValue(value);
 		} else {
 			Vertex v = new Vertex(id, Percept.TEAM_UNKNOWN);
 			v.setValue(value);
+			v.setProbed(true);
 			vertices.put(id, v);
 		}
 	}
@@ -324,7 +326,14 @@ public class Graph {
 		}
 	}
 
-	
+	public boolean isProbedVertex(int id) {
+		Vertex v = vertices.get(id);
+		if (null == v) {
+			return false;
+		}
+		return v.isProbed();
+	}
+
 	/* Getters and Setters */
 
 	public HashMap<Integer, Vertex> getVertices() {

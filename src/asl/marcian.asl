@@ -102,13 +102,13 @@
 +!wait_next_step(S)  : step(S+1).
 +!wait_next_step(S) <- .wait( { +step(_) }, 600, _); !wait_next_step(S).
 
-+step(S) <- .print("Current step is ", S).
++step(S) <- .print("Current step is ", S).	// used for debug purposes
+
+
+
 
 
 // temporary plans
-//+simStart
-//	:	not role(explorer)
-//	<-	!select_goal.
 
 +!select_goal
 	:	is_energy_goal
@@ -118,7 +118,12 @@
 +!select_goal
 	:	is_move_goal
 	<-	!init_goal(move_to_target);
-			//!init_goal(random_walk);
+			!!select_goal.
+
++!select_goal
+	:	is_wait_goal & step(S)
+	<-	.print("waiting next step");
+			!wait_next_step(S);
 			!!select_goal.
 
 +!select_goal

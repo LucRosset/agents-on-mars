@@ -153,7 +153,7 @@ public class Graph {
 		while (!frontier.isEmpty()) {
 			Vertex vertice = frontier.poll();
 			zone.add(vertice);
-			Set<Vertex> neighbors = v.getNeighbors();
+			Set<Vertex> neighbors = vertice.getNeighbors();
 			for (Vertex neighbor : neighbors) {
 				if (!zone.contains(neighbor) && !frontier.contains(neighbor)
 					&& neighbor.getColor() == Vertex.BLUE) {

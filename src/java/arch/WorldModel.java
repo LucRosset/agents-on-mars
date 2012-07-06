@@ -266,23 +266,26 @@ public class WorldModel {
 			}
 		}
 		for (Entity e : coworkers.values()) {
-			neighbors = e.getVertex().getNeighbors();
-			for (Vertex v : neighbors) {
-				if (v.getColor() == Vertex.WHITE) {
-					int numOfBlueNeighbors = 0;
-					int numOfRedNeighbors = 0;
-					for (Vertex vv : v.getNeighbors()) {
-						if (vv.getColor() == Vertex.BLUE) {
-							numOfBlueNeighbors++;
-						} else if (vv.getColor() == Vertex.RED) {
-							numOfRedNeighbors++;
+			Vertex coworkerV = e.getVertex();
+			if (coworkerV.getColor() == Vertex.BLUE) {
+				neighbors = coworkerV.getNeighbors();
+				for (Vertex v : neighbors) {
+					if (v.getColor() == Vertex.WHITE) {
+						int numOfBlueNeighbors = 0;
+						int numOfRedNeighbors = 0;
+						for (Vertex vv : v.getNeighbors()) {
+							if (vv.getColor() == Vertex.BLUE) {
+								numOfBlueNeighbors++;
+							} else if (vv.getColor() == Vertex.RED) {
+								numOfRedNeighbors++;
+							}
 						}
+						if (numOfBlueNeighbors > numOfRedNeighbors && numOfBlueNeighbors > 1) {
+							v.setColor(Vertex.BLUE);
+						} else if (numOfBlueNeighbors < numOfRedNeighbors && numOfRedNeighbors > 1) {
+							v.setColor(Vertex.RED);
+						}	
 					}
-					if (numOfBlueNeighbors > numOfRedNeighbors && numOfBlueNeighbors > 1) {
-						v.setColor(Vertex.BLUE);
-					} else if (numOfBlueNeighbors < numOfRedNeighbors && numOfRedNeighbors > 1) {
-						v.setColor(Vertex.RED);
-					}	
 				}
 			}
 		}

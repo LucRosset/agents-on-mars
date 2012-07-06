@@ -4,10 +4,10 @@
 
 // conditions for goal selection
 is_energy_goal :- energy(MyE) & maxEnergy(Max) & MyE < Max/3.
-//is_probe_goal  :- position(MyV) & not probedVertex(MyV,_) & role(explorer).
 is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer).
 is_buy_goal    :- money(M) & M >= 10.
-is_move_goal	 :- target(X) & not position(X).
+is_move_goal	 :- target(X) & not jia.is_at_target(X).
+is_wait_goal	 :- target(X) & jia.is_at_target(X).
 //is_survey_goal :- position(MyV) & edge(MyV,_,unknown).  // some edge to adjacent vertex is not surveyed
 
 /* Initial goals */
@@ -55,9 +55,6 @@ is_move_goal	 :- target(X) & not position(X).
 		  !init_goal(agents_coordination);
 			!!select_explorer_goal.
 
-//-!select_explorer_goal[error_msg(M)]
-//	<-	.print("Error ",M);
-//			!!select_explorer_goal.
 -!select_explorer_goal[error(I),error_msg(M)]
 	<-	.print("failure in select_explorer_goal! ",I,": ",M).
 

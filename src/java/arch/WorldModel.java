@@ -329,6 +329,44 @@ public class WorldModel {
 		
 	}
 
+	public List<Vertex> getBestZoneNeighbors(List<Vertex> neighbors) {
+		List<Vertex> bestNeighbors = new ArrayList<Vertex>();
+		for (Vertex v : neighbors) {
+			Set<Vertex> vNeighbors = v.getNeighbors();
+			int count = 0;
+			for (Vertex vNeighbor : vNeighbors) {
+				if (vNeighbor.getColor() == Vertex.BLUE) {
+					count++;
+				}
+			}
+			if (count >= 2) {
+				bestNeighbors.add(v);
+			}
+		}
+		return bestNeighbors;
+	}
+
+	public Vertex closerVertex(Vertex position, List<Vertex> vertices) {
+		Vertex closerVertex = null;
+		int closerDistance = Integer.MAX_VALUE;
+		for (Vertex v : vertices) {
+			int dist = graph.getDistance(position, v);
+			if (dist < closerDistance) {
+				closerVertex = v;
+			}
+		}
+		return closerVertex;
+	}
+
+	public boolean isFrontier(Vertex v) {
+		for (Vertex neighbor : v.getNeighbors()) {
+			if (neighbor.getColor() != Vertex.BLUE) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/* Getters and Setters */
 
 	public Graph getGraph() {
@@ -341,5 +379,9 @@ public class WorldModel {
 
 	public void setMyVertex(Vertex myVertex) {
 		this.myVertex = myVertex;
+	}
+
+	public HashMap<String, Entity> getCoworkers() {
+		return coworkers;
 	}
 }

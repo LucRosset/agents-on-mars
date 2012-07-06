@@ -52,7 +52,7 @@ is_move_goal	 :- target(X) & not position(X).
 
 +!select_explorer_goal
 	<- 	//!init_goal(random_walk);
-		  !init_goal(coordinate_agents);
+		  !init_goal(agents_coordination);
 			!!select_explorer_goal.
 
 //-!select_explorer_goal[error_msg(M)]
@@ -106,21 +106,6 @@ is_move_goal	 :- target(X) & not position(X).
 
 /* Random walk plans */
 
-//+!random_walk 
-//    : position(MyV) // my location
-//   <- .setof(V, visibleEdge(MyV,V), Options);
-//   		if (.length(Options,0)) {
-//   			.setof(X, visibleEdge(X,MyV), Optionss);
-//   			.nth(math.random(.length(Optionss)), Optionss, Ops);
-//   			.print("Random walk options ",Optionss," going to ",Ops);
-//	  		!do_and_wait_next_step(goto(Ops))
-//   		};
-//   		if (not .length(Options,0)) {
-//   			.nth(math.random(.length(Options)), Options, Op);
-//   			.print("Random walk options ",Options," going to ",Op);
-//	  		!do_and_wait_next_step(goto(Op))
-//   		}.
-
 +!random_walk 
     : position(MyV) // my location
    <- jia.random_walk(MyV,Target);
@@ -130,40 +115,23 @@ is_move_goal	 :- target(X) & not position(X).
 	<-	.print("failure in random_walk! ",I,": ",M).
 
 
-+!coordinate_agents
++!agents_coordination
 	: step(S)
-	<- 	jia.calculate_strategy(P);
-			.findall(coworkerPosition(X,Y), coworkerPosition(X,Y), Agents);
+	<- 	jia.agents_coordination(A,P);
 			.print("New formation!! ", .length(P));
-			!send_target(Agents,P);
+			!send_target(A,P);
 			!wait_next_step(S).
 
-// send a new target(X) to the agents
-+!send_target([coworkerPosition(X,Y)|TAg],Positions)
-	: .length(Positions) > 0
- 	<- !find_closest(coworkerPosition(X,Y),Positions,NearPos);
- 		 .print("send: ", X, ", " ,NearPos);
- 	   .send(X,tell,target(NearPos));
-// 	   .print("TLOC: ", .length(Positions));
-// 	   .print("TAg: ", TAg);
- 	   .delete(NearPos,Positions,TLoc);
+
++!send_target([X|TAg],[Y|TLoc])
+ 	<- .print("send: ",X, ", " ,Y);
+ 	   .send(X,tell,target(Y));
+ 	   //.print("TAg: ", TAg);
  	   !send_target(TAg,TLoc).
-+!send_target([],Positions).
-+!send_target(Agents,[]).
 +!send_target([],[]).
-+!send_target(_,Positions).
+
 -!send_target[error(I),error_msg(M)]
 	<-	.print("failure in send_target! ",I,": ",M).
-
-
-// find the position near to the coworker agent
-+!find_closest(coworkerPosition(_,Y), Positions, NearPos)
- 	<- .my_name(Me);
- 	   .findall(d(D,Pos),
-           .member(Pos,Positions) & jia.path_length(Y,Pos,D), Distances);
-           .min(Distances,d(_,NearPos)).
--!find_closest[error_msg(M),code(C),code_line(L)]
-	<- .print("Error on find_closest, command: ",C,", line ",L,", message: ",M).
 
 
 +!move_to_target
@@ -172,19 +140,3 @@ is_move_goal	 :- target(X) & not position(X).
 			!do_and_wait_next_step(goto(NextPos)).
 -!move_to_target[error(I),error_msg(M)]
 	<-	.print("failure in move_to_target! ",I,": ",M).
-
-
-
-// store perceived probed vertexs in the BB
-//+probedVertex(L,V) <- +probedVertex(L,V). 
-
-// store edges in the BB
-//@lve1[atomic]
-//+visibleEdge(V1,V2)    
-//   <- +edge(V1,V2,unknown);
-//      +edge(V2,V1,unknown).
-	  
-//@lve12[atomic]
-//+surveyedEdge(V1,V2,C) 
-//   <- -edge(V1,V2,_); -edge(V2,V1,_);
-//      +edge(V1,V2,C); +edge(V2,V1,C).

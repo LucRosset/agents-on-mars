@@ -166,9 +166,13 @@ public class Graph {
 
 	public int getDistance(int v1, int v2) {
 		Vertex vertex1 = vertices.get(v1);
-		vertex1.setDistance(0);
 		Vertex vertex2 = vertices.get(v2);
+		return getDistance(vertex1, vertex2);
+	}
+
+	public int getDistance(Vertex vertex1, Vertex vertex2) {
 		// uses breadth-first search
+		vertex1.setDistance(0);
 		Queue<Vertex> frontier = new LinkedList<Vertex>();
 		Set<Vertex> explored = new HashSet<Vertex>();
 		frontier.add(vertex1);

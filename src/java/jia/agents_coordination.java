@@ -1,11 +1,12 @@
 package jia;
 
-import graph.Vertex;
 
 import java.util.HashMap;
 import java.util.List;
 
-import arch.Entity;
+import model.Entity;
+import model.graph.Vertex;
+
 import arch.MarcianArch;
 import arch.WorldModel;
 import jason.asSemantics.DefaultInternalAction;

@@ -1,6 +1,6 @@
 package jia;
 
-import graph.Graph;
+import model.graph.Graph;
 import arch.MarcianArch;
 import arch.WorldModel;
 import jason.asSemantics.DefaultInternalAction;

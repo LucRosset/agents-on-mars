@@ -1,6 +1,6 @@
 package jia;
 
-import graph.Graph;
+import model.graph.Graph;
 import jason.asSemantics.DefaultInternalAction;
 import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;

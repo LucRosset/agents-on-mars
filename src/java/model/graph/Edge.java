@@ -1,4 +1,4 @@
-package graph;
+package model.graph;
 
 /**
  * Edge class.

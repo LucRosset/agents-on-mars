@@ -1,6 +1,6 @@
-package arch;
+package model;
 
-import graph.Vertex;
+import model.graph.Vertex;
 
 public class Entity {
 

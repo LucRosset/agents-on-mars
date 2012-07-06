@@ -1,6 +1,5 @@
 package jia;
 
-import graph.Vertex;
 import jason.asSemantics.DefaultInternalAction;
 import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;
@@ -10,6 +9,8 @@ import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.Term;
 
 import java.util.List;
+
+import model.graph.Vertex;
 
 import arch.MarcianArch;
 import arch.WorldModel;

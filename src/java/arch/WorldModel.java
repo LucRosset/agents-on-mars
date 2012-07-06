@@ -1,8 +1,6 @@
 package arch;
 
 import env.Percept;
-import graph.Graph;
-import graph.Vertex;
 import jason.asSyntax.Literal;
 import jason.asSyntax.NumberTerm;
 
@@ -10,6 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import model.Entity;
+import model.graph.Graph;
+import model.graph.Vertex;
 
 /**
  * Class used to model the scenario.

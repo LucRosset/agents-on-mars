@@ -23,11 +23,9 @@ public class Vertex {
 
 	private boolean probed = false;
 
+	private int visited = 0;
 	private int distance = 0;
 	private Vertex parent = null;
-
-	private int numOfCoworkers = 0;	// TODO remove if not used
-	private int numOfOpponents = 0; // TODO remove if not used
 
 	private Set<Vertex> neighbors;
 
@@ -53,6 +51,10 @@ public class Vertex {
 
 	public void addDistance(int value) {
 		distance += value;
+	}
+
+	public void addVisited() {
+		visited ++;
 	}
 
 	/* Getters and Setters */
@@ -86,14 +88,6 @@ public class Vertex {
 		this.color = color;
 	}
 
-	public int getNumOfCoworkers() {
-		return numOfCoworkers;
-	}
-
-	public int getNumOfOpponents() {
-		return numOfOpponents;
-	}
-
 	public Set<Vertex> getNeighbors() {
 		return neighbors;
 	}
@@ -120,6 +114,14 @@ public class Vertex {
 
 	public void setProbed(boolean probed) {
 		this.probed = probed;
+	}
+
+	public int getVisited() {
+		return visited;
+	}
+
+	public void setVisited(int visited) {
+		this.visited = visited;
 	}
 
 	@Override

@@ -24,14 +24,19 @@ public class agents_coordination extends DefaultInternalAction {
 	@Override
 	public Object execute(TransitionSystem ts, Unifier un, Term[] terms) throws Exception {
 		synchronized (this) {
+			ListTerm positions = new ListTermImpl();
+			ListTerm agents = new ListTermImpl();
+
 			WorldModel model = ((MarcianArch) ts.getUserAgArch()).getModel();
 			List<Vertex> bestZone = model.getBestZone();	// zone with the greatest value
+
+			if (null == bestZone || bestZone.isEmpty()) {
+				return un.unifies(terms[0], agents) & un.unifies(terms[1], positions);
+			}
+
 			List<Vertex> zoneNeighbors = model.getZoneNeighbors(bestZone);
 			List<Vertex> bestNeighbors = model.getBestZoneNeighbors(zoneNeighbors);
 			zoneNeighbors.removeAll(bestNeighbors);
-
-			ListTerm positions = new ListTermImpl();
-			ListTerm agents = new ListTermImpl();
 
 			if (zoneNeighbors.isEmpty() && bestNeighbors.isEmpty()) {
 				return un.unifies(terms[0], agents) & un.unifies(terms[1], positions);

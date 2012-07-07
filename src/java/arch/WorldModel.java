@@ -133,6 +133,7 @@ public class WorldModel {
 						graph.addVertex(vtx);
 					}
 					myVertex = vtx;
+					myVertex.addVisited();
 					newPercepts.add(percept);
 				}
 				break;

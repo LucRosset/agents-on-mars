@@ -203,6 +203,20 @@ public class Graph {
 		return neighbors.get(randomInt).getId();
 	}
 
+	public int returnLeastVisitedNeighbor(int v1) {
+		Vertex vertex1 = vertices.get(v1);
+		List<Vertex> neighbors = new ArrayList<Vertex>(vertex1.getNeighbors());
+
+		Vertex leastVisited = neighbors.remove(0);
+		int minValue = leastVisited.getVisited();
+		for (Vertex neighbor : neighbors) {
+			if (neighbor.getVisited() < minValue) {
+				leastVisited = neighbor;
+			}
+		}
+		return leastVisited.getId();
+	}
+
 	public int returnNextMove(int v1, int v2) {
 		Vertex vertex1 = vertices.get(v1);
 		vertex1.setParent(null);

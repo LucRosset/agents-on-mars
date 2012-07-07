@@ -105,7 +105,8 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 
 +!random_walk 
     : position(MyV) // my location
-   <- jia.random_walk(MyV,Target);
+   <- //jia.random_walk(MyV,Target);
+   		jia.least_visited_neighbor(MyV,Target);
    		!do_and_wait_next_step(goto(Target)).
 
 -!random_walk[error(I),error_msg(M)]

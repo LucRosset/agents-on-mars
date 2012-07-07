@@ -12,10 +12,6 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 
 /* Initial goals */
 
-+simEnd 
-   <- .abolish(_); // clean all BB
-      .drop_all_desires.
-	  
 +!explorer_goal
 	<-	.print("Starting explorer_goal");
 			!select_explorer_goal.

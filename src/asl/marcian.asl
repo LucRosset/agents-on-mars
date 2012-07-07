@@ -67,29 +67,50 @@
 
 // plan to start to play a role
 +!playRole
-	:	role(R)
+	:	role(R) & .my_name(Ag)
 	<- 	jia.to_lower_case(R,S);
 		  -role(R);
 		  +role(S);
 			adoptRole(S)[artifact_id(GrArtId)];
+			!check_play(Ag,S,_);
 			.print("I'll play role ",S).
 
 -!playRole
 	<- 	.wait(100);
 			!playRole.
 
++!check_play(A,R,_)
+	:	play(A,R,_) & .my_name(A).
+
++!check_play(A,R,_)
+	<- 	.wait({+play(_,_,_)},200,_);
+			adoptRole(R)[artifact_id(GrArtId)];
+			!check_play(A,R,_).
 
 // plans to handle obligations
 +obligation(Ag,Norm,committed(Ag,Mission,Scheme),Deadline)
     : .my_name(Ag)
    <- .print("I am obliged to commit to ",Mission," on ",Scheme);
-      commitMission(Mission)[artifact_name(Scheme)].
+      commitMission(Mission)[artifact_name(Scheme)];
+      !check_commit_mission(Mission,Scheme).
 
 +obligation(Ag,Norm,achieved(Scheme,Goal,Ag),DeadLine)
     : .my_name(Ag)
    <- .print("I am obliged to achieve goal ",Goal);
       !Goal[scheme(Scheme)];
       goalAchieved(Goal)[artifact_name(Scheme)].
+
+
++!check_commit_mission(M,S)
+	:	.my_name(A) & commitment(A,M,_)
+	<-	.print("OK!").
+
++!check_commit_mission(M,S)
+	<-	.wait({+commitment(_,_,_)},200,_);
+			.print("[ERROR] Trying again to commit to ",M," on ",S);
+			commitMission(Mission)[artifact_name(S)];
+			!check_commit_mission(M,S).
+
 
 /* general plans */
 
@@ -102,10 +123,13 @@
 +!wait_next_step(S)  : step(S+1).
 +!wait_next_step(S) <- .wait( { +step(_) }, 600, _); !wait_next_step(S).
 
-+step(S) <- .print("Current step is ", S).	// used for debug purposes
+//+step(S) <- .print("Current step is ", S).	// used for debug purposes
 
 
 
++simEnd 
+   <- .abolish(_); // clean all BB
+      .drop_all_desires.
 
 
 // temporary plans

@@ -1,14 +1,6 @@
 package jia;
 
 
-import java.util.HashMap;
-import java.util.List;
-
-import model.Entity;
-import model.graph.Vertex;
-
-import arch.MarcianArch;
-import arch.WorldModel;
 import jason.asSemantics.DefaultInternalAction;
 import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;
@@ -16,6 +8,15 @@ import jason.asSyntax.ASSyntax;
 import jason.asSyntax.ListTerm;
 import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.Term;
+
+import java.util.HashMap;
+import java.util.List;
+
+import model.Entity;
+import model.graph.Graph;
+import model.graph.Vertex;
+import arch.MarcianArch;
+import arch.WorldModel;
 
 public class agents_coordination extends DefaultInternalAction {
 
@@ -28,6 +29,7 @@ public class agents_coordination extends DefaultInternalAction {
 			ListTerm agents = new ListTermImpl();
 
 			WorldModel model = ((MarcianArch) ts.getUserAgArch()).getModel();
+			Graph graph = model.getGraph();
 			List<Vertex> bestZone = model.getBestZone();	// zone with the greatest value
 
 			if (null == bestZone || bestZone.isEmpty()) {
@@ -83,6 +85,55 @@ public class agents_coordination extends DefaultInternalAction {
 				}
 			}
 
+			
+			// my move
+			Vertex myVertex = model.getMyVertex();
+			Vertex myTarget = null;
+			if (bestZone.contains(myVertex)) {
+				if (model.isFrontier(myVertex)) {
+					// TODO verify if the agent can move to a neighbor without break the zone
+				} else {
+					List<Vertex> notProbedNeighbors = graph.returnNotProbedNeighbors(myVertex);
+					if (!notProbedNeighbors.isEmpty()) {
+						for (Vertex notProbedNeighbor : notProbedNeighbors) {
+							if (bestZone.contains(notProbedNeighbor)) {
+								myTarget = notProbedNeighbor;
+							}
+						}
+					}
+
+					if (myTarget != null) {
+						notProbedNeighbors = graph.returnNotProbedNeighbors(bestZone);
+						if (!notProbedNeighbors.isEmpty()) {
+							myTarget = notProbedNeighbors.get(0);	// TODO get the more closer vertex
+						}
+						// TODO else?
+					}
+				}
+			} else {
+				if (!bestNeighbors.isEmpty()) {
+					myTarget = model.closerVertex(myVertex, bestNeighbors);
+					if (null != myTarget) {
+						bestNeighbors.remove(myTarget);
+					}
+				} else if (!zoneNeighbors.isEmpty()) {
+					myTarget = model.closerVertex(myTarget, bestNeighbors);
+					if (null != myTarget) {
+						zoneNeighbors.remove(myTarget);
+					}
+				} else {
+					List<Vertex> notProbedNeighbors = graph.returnNotProbedNeighbors(bestZone);
+					if (!notProbedNeighbors.isEmpty()) {
+						myTarget = notProbedNeighbors.get(0);	// TODO get the more closer vertex
+					}
+					// TODO else?
+				}
+			}
+
+			if (null != myTarget) {
+				agents.add(ASSyntax.createString(ts.getUserAgArch().getAgName()));
+				positions.add(ASSyntax.createString("vertex" + myTarget.getId()));
+			}
 			return un.unifies(terms[0], agents) & un.unifies(terms[1], positions);
 		}
 	}

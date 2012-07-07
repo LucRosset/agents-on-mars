@@ -8,13 +8,9 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
 is_buy_goal    :- money(M) & M >= 10.
 is_move_goal	 :- target(X) & not jia.is_at_target(X).
 is_wait_goal	 :- target(X) & jia.is_at_target(X).
-//is_survey_goal :- position(MyV) & edge(MyV,_,unknown).  // some edge to adjacent vertex is not surveyed
+
 
 /* Initial goals */
-
-//+simStart
-//	:	role(explorer)
-//	<-	!select_explorer_goal.
 
 +simEnd 
    <- .abolish(_); // clean all BB
@@ -34,11 +30,6 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 	<-	!init_goal(probe);
 			!!select_explorer_goal.
 
-//+!select_explorer_goal
-//	: is_survey_goal
-//	<-	!init_goal(survey);
-//			!!select_explorer_goal.
-
 +!select_explorer_goal
 	:	is_buy_goal
 	<-	!init_goal(buy(battery));
@@ -47,12 +38,16 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 +!select_explorer_goal
 	:	is_move_goal
 	<-	!init_goal(move_to_target);
-			//!init_goal(random_walk);
 			!!select_explorer_goal.
 
 +!select_explorer_goal
-	<- 	//!init_goal(random_walk);
-		  !init_goal(agents_coordination);
+	:	is_wait_goal
+	<-	-target(_);
+			!init_goal(move_to_not_probed);
+			!!select_explorer_goal.
+
++!select_explorer_goal
+	<- 	!init_goal(agents_coordination);
 			!!select_explorer_goal.
 
 -!select_explorer_goal[error(I),error_msg(M)]
@@ -86,12 +81,6 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 +!probe
    <- .print("Probing my location");
       !do_and_wait_next_step(probe).
-	  
-/* Probe plans */
-
-+!survey
-   <- .print("Surveying");
-      !do_and_wait_next_step(survey).
 
 /* Buy battery */
 
@@ -113,6 +102,8 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 	<-	.print("failure in random_walk! ",I,": ",M).
 
 
+/* Agents coordination plans */
+
 +!agents_coordination
 	: step(S)
 	<- 	jia.agents_coordination(A,P);
@@ -120,17 +111,17 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 			!send_target(A,P);
 			!wait_next_step(S).
 
-
 +!send_target([X|TAg],[Y|TLoc])
- 	<- .print("send: ",X, ", " ,Y);
- 	   .send(X,tell,target(Y));
- 	   //.print("TAg: ", TAg);
- 	   !send_target(TAg,TLoc).
+ 	<- 	.print("send: ",X, ", " ,Y);
+ 	   	.send(X,tell,target(Y));
+ 	   	!send_target(TAg,TLoc).
 +!send_target([],[]).
 
 -!send_target[error(I),error_msg(M)]
 	<-	.print("failure in send_target! ",I,": ",M).
 
+
+/* Move to taget plans */
 
 +!move_to_target
 	:	target(Y) & position(X)
@@ -138,3 +129,11 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 			!do_and_wait_next_step(goto(NextPos)).
 -!move_to_target[error(I),error_msg(M)]
 	<-	.print("failure in move_to_target! ",I,": ",M).
+
+
+/* Move to not probed */
+
++!move_to_not_probed
+	: position(MyV) // my location
+	<- jia.move_to_not_probed(MyV,Target);
+		 !do_and_wait_next_step(goto(Target)).

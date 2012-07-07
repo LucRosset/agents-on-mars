@@ -217,6 +217,31 @@ public class Graph {
 		return leastVisited.getId();
 	}
 
+	public List<Vertex> returnNotProbedNeighbors(int v1) {
+		Vertex vertex1 = vertices.get(v1);
+		return returnNotProbedNeighbors(vertex1);	
+	}
+
+	public List<Vertex> returnNotProbedNeighbors(Vertex vertex1) {
+		List<Vertex> notProbedNeighbors = new ArrayList<Vertex>();
+		List<Vertex> neighbors = new ArrayList<Vertex>(vertex1.getNeighbors());
+
+		for (Vertex neighbor : neighbors) {
+			if (!neighbor.isProbed()) {
+				notProbedNeighbors.add(neighbor);
+			}
+		}
+		return notProbedNeighbors;
+	}
+
+	public List<Vertex> returnNotProbedNeighbors(List<Vertex> vertices) {
+		List<Vertex> notProbedNeighbors = new ArrayList<Vertex>();
+		for (Vertex v : vertices) {
+			notProbedNeighbors.addAll(returnNotProbedNeighbors(v));
+		}
+		return notProbedNeighbors;
+	}
+
 	public int returnNextMove(int v1, int v2) {
 		Vertex vertex1 = vertices.get(v1);
 		vertex1.setParent(null);

@@ -40,7 +40,7 @@
 			!start.
 
 +!join 
-	<- 	.my_name(Me); 
+	<- 	.my_name(Me);
 			joinWorkspace("marsWS",_).
 -!join
 	<- 	.wait(200);

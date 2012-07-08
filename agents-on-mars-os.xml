@@ -85,16 +85,16 @@
                           role="explorer" mission="mExplorer" />
 
         <norm id = "n2"   type="obligation" 
-                          role="inspector" mission="mRepairer" />
+                          role="inspector" mission="mInspector" />
 
         <norm id = "n3"   type="obligation" 
-                          role="repairer" mission="mSaboteur" />
+                          role="repairer" mission="mRepairer" />
 
         <norm id = "n4"   type="obligation" 
-                          role="saboteur" mission="mSentinel" />
+                          role="saboteur" mission="mSaboteur" />
 
         <norm id = "n5"   type="obligation"
-                          role="sentinel" mission="mInspector" />
+                          role="sentinel" mission="mSentinel" />
 
     </normative-specification>
 

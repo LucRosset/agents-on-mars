@@ -17,6 +17,8 @@ public class Percept {
 	public final static String TEAM_NONE = "none";
 	public final static String TEAM_UNKNOWN = "unknown";
 
+	public final static String STATUS_DISABLED = "disabled";
+
 	/* Team Percepts */
 	public final static String coworkerPosition = "coworkerPosition";
 	public final static String coworkerRole = "coworkerRole";

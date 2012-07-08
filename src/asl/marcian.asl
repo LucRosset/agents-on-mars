@@ -123,8 +123,8 @@
 +!wait_next_step(S)  : step(S+1).
 +!wait_next_step(S) <- .wait( { +step(_) }, 600, _); !wait_next_step(S).
 
-//+step(S) <- .print("Current step is ", S).	// used for debug purposes
 
+//+step(S) <- .print("Current step is ", S).	// used for debug purposes
 
 
 +simEnd 

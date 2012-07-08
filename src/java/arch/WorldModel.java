@@ -239,7 +239,8 @@ public class WorldModel {
 		// color opponents vertices
 		for (Entity e : opponents.values()) {
 			Vertex v = e.getVertex();
-			if (!v.getTeam().equals(myTeam) && !v.getTeam().equals(Percept.TEAM_NONE)
+			if (!e.getStatus().equals(Percept.STATUS_DISABLED)
+					&& !v.getTeam().equals(myTeam) && !v.getTeam().equals(Percept.TEAM_NONE)
 					&& !v.getTeam().equals(Percept.TEAM_UNKNOWN)) {
 				v.setColor(Vertex.RED);
 			}
@@ -371,6 +372,27 @@ public class WorldModel {
 			}
 		}
 		return false;
+	}
+
+	public boolean hasActiveOpponentOnVertex(Vertex v) {
+		for (Entity opponent : opponents.values()) {
+			if (opponent.getVertex().equals(v)
+					&& !opponent.getStatus().equals(Percept.STATUS_DISABLED)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String getOpponentName(Vertex v) {
+		String opponentName = null;
+		for (Entity opponent : opponents.values()) {
+			if (opponent.getVertex().equals(v)) {
+				opponentName = opponent.getName();
+				return opponentName;
+			}
+		}
+		return opponentName;
 	}
 
 	/* Getters and Setters */

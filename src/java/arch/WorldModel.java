@@ -461,7 +461,8 @@ public class WorldModel {
 	public String getOpponentName(Vertex v) {
 		String opponentName = null;
 		for (Entity opponent : opponents.values()) {
-			if (opponent.getVertex().equals(v)) {
+			if (opponent.getVertex().equals(v)
+					&& !opponent.getStatus().equals(Percept.STATUS_DISABLED)) {
 				opponentName = opponent.getName();
 				return opponentName;
 			}

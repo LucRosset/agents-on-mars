@@ -90,4 +90,9 @@ is_repair_goal			:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos)
 	: need_help(Ag) & not_need_help(Ag)
 	<-	.abolish(need_help(Ag));
 			.abolish(not_need_help(Ag));
-			.abolish(help_target(_)).
+			!remove_help_target.
+
++!remove_help_target
+	:	help_target(Ag) & not need_help(Ag)
+	<-	.abolish(help_target(Ag)).
++!remove_help_target.

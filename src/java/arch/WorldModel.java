@@ -139,17 +139,19 @@ public class WorldModel {
 				break;
 			case Percept.saboteur:
 				String saboteurName = percept.getTerm(0).toString();
+				saboteurName = saboteurName.replaceAll("\"", "");
 				String saboteurPosition = percept.getTerm(1).toString();
 				saboteurPosition = saboteurPosition.replace("vertex", "");
 				int saboteurPos = Integer.parseInt(saboteurPosition);
 				Entity saboteur = opponents.get(saboteurName);
 				if (null == saboteur) {
 					saboteur = new Entity(saboteurName);
+					opponents.put(saboteurName, saboteur);
 				}
 				saboteur.setRole("saboteur");
 				Vertex saboteurVtx = graph.getVertices().get(saboteurPosition);
 				if (null == saboteurVtx) {
-					saboteurVtx = new Vertex(saboteurPos, myTeam);
+					saboteurVtx = new Vertex(saboteurPos);
 					graph.addVertex(saboteurVtx);
 				}
 				saboteur.setVertex(saboteurVtx);
@@ -167,8 +169,17 @@ public class WorldModel {
 			v = new Vertex(vertex);
 			graph.addVertex(vertex, team);
 		}
-		Entity e = new Entity(name, team, v, status);
-		opponents.put(name, e);
+		Entity e = opponents.get(name);
+		if (null == e) {
+			e = new Entity(name, team, v, status);
+			opponents.put(name, e);
+		} else {
+			e.setVertex(v);
+			if (!team.equals(Percept.TEAM_NONE) && !team.equals(Percept.TEAM_UNKNOWN)) {
+				e.setTeam(team);
+			}
+			e.setStatus(status);
+		}
 	}
 
 	private boolean containsOpponent(String name, int vertex, String team, String status) {
@@ -404,7 +415,7 @@ public class WorldModel {
 	public boolean hasActiveOpponentOnVertex(Vertex v) {
 		for (Entity opponent : opponents.values()) {
 			if (opponent.getVertex().equals(v)
-					&& !opponent.getStatus().equals(Percept.STATUS_DISABLED)) {
+					&& !opponent.getStatus().toLowerCase().equals(Percept.STATUS_DISABLED)) {
 				return true;
 			}
 		}
@@ -487,6 +498,18 @@ public class WorldModel {
 		}
 		return agents;
 	}
+
+	public List<Entity> getActiveOpponentByRole(String role) {
+		List<Entity> agents = new ArrayList<Entity>();
+		for (Entity opponent : opponents.values()) {
+			if (opponent.getRole().toLowerCase().equals(role)
+					&& !opponent.getStatus().toLowerCase().equals(Percept.STATUS_DISABLED)) {
+				agents.add(opponent);
+			}
+		}
+		return agents;
+	}
+
 
 	/* Getters and Setters */
 

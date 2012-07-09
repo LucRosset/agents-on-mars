@@ -8,7 +8,7 @@ import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;
 import jason.asSyntax.Term;
 
-public class is_attack_goal extends DefaultInternalAction {
+public class has_opponent_on_vertex extends DefaultInternalAction {
 
 	private static final long serialVersionUID = 1182494310168253005L;
 

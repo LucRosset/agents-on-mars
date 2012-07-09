@@ -1,14 +1,15 @@
 package model;
 
+import env.Percept;
 import model.graph.Vertex;
 
 public class Entity {
 
 	private String name;
-	private String team;
 	private Vertex vertex;
-	private String status;
-	private String role;
+	private String team = Percept.TEAM_UNKNOWN;
+	private String status = Percept.STATUS_UNKNOWN;
+	private String role = Percept.ROLE_UNKNOWN;
 
 	public Entity(String name) {
 		this.name = name;

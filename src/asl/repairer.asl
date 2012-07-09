@@ -12,6 +12,22 @@ is_repair_goal			:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos)
 	<-	.print("Starting repairer_goal"); 
 			!select_repairer_goal.
 
+
++!select_repairer_goal
+	:	is_call_help_goal & step(S)
+		<-	jia.get_repairers(Agents);
+				!init_goal(call_help(Agents));
+				+need_help;
+				!alert_saboteur;
+				!!select_repairer_goal.
+
++!select_repairer_goal
+	:	is_not_need_help_goal
+	<-	jia.get_repairers(Agents);
+			!init_goal(send_not_need_help(Agents));
+			-need_help;
+			!!select_repairer_goal.
+
 +!select_repairer_goal
 	:	is_energy_goal
 	<-	!init_goal(be_at_full_charge);
@@ -32,6 +48,13 @@ is_repair_goal			:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos)
 	:	need_help(Ag) & jia.agent_position(Ag,Pos) & position(Pos)
 	<-	jia.agent_server_id(Ag,Id);
 			!do_and_wait_next_step(repair(Id));
+			!!select_repairer_goal.
+
++!select_repairer_goal
+	:	is_disabled_goal & step(S)
+	<-	.print("Moving to closest repairer.");
+			jia.closer_repairer(Pos);
+			!init_goal(move_closer_to_repairer(Pos));
 			!!select_repairer_goal.
 
 +!select_repairer_goal

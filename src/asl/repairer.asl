@@ -1,10 +1,10 @@
 // Agent Repairer
 
 /* Initial beliefs and rules */
-is_not_help_goal	:-	need_help(Ag) & not_need_help(Ag).
-is_help_goal	:-	need_help(Ag) & not help_target(_).
-is_help_target_goal	:-	help_target(Ag) &  jia.agent_position(Ag,Pos) & not position(Pos) & not has_saboteur_at(Pos).
-is_repair_goal	:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos).
+is_not_help_goal		:-	need_help(Ag) & not_need_help(Ag).
+is_help_goal				:-	need_help(Ag) & not help_target(_).
+is_help_target_goal	:-	help_target(Ag) & jia.agent_position(Ag,Pos) & not position(Pos) & not has_saboteur_at(Pos).
+is_repair_goal			:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos).
 
 /* Initial goals */
 
@@ -23,6 +23,18 @@ is_repair_goal	:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos).
 			!!select_repairer_goal.
 
 +!select_repairer_goal
+	:	is_repair_goal & help_target(Ag)
+	<-	jia.agent_server_id(Ag,Id);
+			!do_and_wait_next_step(repair(Id));
+			!!select_repairer_goal.
+
++!select_repairer_goal
+	:	need_help(Ag) & jia.agent_position(Ag,Pos) & position(Pos)
+	<-	jia.agent_server_id(Ag,Id);
+			!do_and_wait_next_step(repair(Id));
+			!!select_repairer_goal.
+
++!select_repairer_goal
 	:	is_help_goal
 	<-	.findall(X, need_help(X), Agents);
 			jia.closer_agent(Agents,Ag,Pos);
@@ -34,12 +46,6 @@ is_repair_goal	:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos).
 	<-	jia.agent_position(Ag,Pos);
 			jia.move_to_target(X,Pos,NextPos);
 			!do_and_wait_next_step(goto(NextPos));
-			!!select_repairer_goal.
-
-+!select_repairer_goal
-	:	is_repair_goal & help_target(Ag)
-	<-	jia.agent_server_id(Ag,Id);
-			!do_and_wait_next_step(repair(Id));
 			!!select_repairer_goal.
 
 +!select_repairer_goal
@@ -56,7 +62,6 @@ is_repair_goal	:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos).
 +!select_repairer_goal
 	<- 	!init_goal(random_walk);
 			!!select_repairer_goal.
-
 
 +!not_help
 	: need_help(Ag) & not_need_help(Ag)

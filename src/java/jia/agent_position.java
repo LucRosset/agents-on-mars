@@ -19,6 +19,9 @@ public class agent_position extends DefaultInternalAction {
 		String agentName = ((StringTerm) terms[0]).getString();
 		WorldModel model = ((MarcianArch) ts.getUserAgArch()).getModel();
 		Vertex v = model.getCoworkerPosition(agentName);
+		if (null == v) {
+			return un.unifies(terms[1], new Atom("null"));
+		}
 		return un.unifies(terms[1], new Atom("vertex" + v.getId()));
 	}
 }

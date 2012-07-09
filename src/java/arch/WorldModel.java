@@ -471,6 +471,9 @@ public class WorldModel {
 
 	public Vertex getCoworkerPosition(String agentName) {
 		Entity agent = coworkers.get(agentName);
+		if (null == agent) {
+			return null;
+		}
 		return agent.getVertex();
 	}
 

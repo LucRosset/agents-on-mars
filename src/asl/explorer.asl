@@ -3,12 +3,7 @@
 /* Initial beliefs and rules */
 
 // conditions for goal selection
-is_energy_goal :- energy(MyE) & maxEnergy(Max) & MyE < Max/3.
 is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer).
-is_buy_goal    :- money(M) & M >= 10.
-is_move_goal	 :- target(X) & not jia.is_at_target(X).
-is_wait_goal	 :- target(X) & jia.is_at_target(X).
-
 
 /* Initial goals */
 
@@ -16,9 +11,32 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 	<-	.print("Starting explorer_goal");
 			!select_explorer_goal.
 
+
++!select_explorer_goal
+	:	is_call_help_goal & step(S)
+		<-	jia.get_repairers(Agents);
+				!init_goal(call_help(Agents));
+				+need_help;
+				!alert_saboteur;
+				!!select_explorer_goal.
+
++!select_explorer_goal
+	:	is_not_need_help_goal
+	<-	jia.get_repairers(Agents);
+			!init_goal(send_not_need_help(Agents));
+			-need_help;
+			!!select_explorer_goal.
+
 +!select_explorer_goal
 	:	is_energy_goal
 	<-	!init_goal(be_at_full_charge);
+			!!select_explorer_goal.
+
++!select_explorer_goal
+	:	is_disabled_goal & step(S)
+	<-	.print("Moving to closest repairer.");
+			jia.closer_repairer(Pos);
+			!init_goal(move_closer_to_repairer(Pos));
 			!!select_explorer_goal.
 
 +!select_explorer_goal
@@ -49,15 +67,6 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 -!select_explorer_goal[error(I),error_msg(M)]
 	<-	.print("failure in select_explorer_goal! ",I,": ",M).
 
-+!init_goal(G)
-	:	step(S) & position(V) & energy(E) & maxEnergy(Max)
-	<-	.print("I am at ",V," (",E,"/",Max,"), the goal for step ",S," is ",G);
-      !G.
-
-+!init_goal(G)
-	<-	.print("No step yet... wait a bit");
-      .wait(300);
-	  	!init_goal(G).
 
 
 /* Plans for energy */
@@ -68,8 +77,7 @@ is_wait_goal	 :- target(X) & jia.is_at_target(X).
 +!be_at_full_charge 
     : energy(MyE)
    <- .print("My energy is ",MyE,", recharging");
-      !do_and_wait_next_step(recharge);
-	  	!be_at_full_charge. // otherwise, recharge
+      !do_and_wait_next_step(recharge). // otherwise, recharge
 
 
 /* Probe plans */

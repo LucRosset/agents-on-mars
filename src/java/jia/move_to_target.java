@@ -24,6 +24,9 @@ public class move_to_target extends DefaultInternalAction {
 		String vertex1 = ((Atom) terms[0]).getFunctor();
 		vertex1 = vertex1.replace("vertex", "");
 		String vertex2 = ((StringTerm) terms[1]).getString();
+		if (null == vertex2) {
+			vertex2 = ((Atom) terms[1]).getFunctor();
+		}
 		vertex2 = vertex2.replace("vertex", "");
 		int v1 = Integer.parseInt(vertex1);
 		int v2 = Integer.parseInt(vertex2);

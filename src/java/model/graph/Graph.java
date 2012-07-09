@@ -171,6 +171,9 @@ public class Graph {
 	}
 
 	public int getDistance(Vertex vertex1, Vertex vertex2) {
+		if (vertex1.equals(vertex2)) {
+			return 0;
+		}
 		// uses breadth-first search
 		vertex1.setDistance(0);
 		Queue<Vertex> frontier = new LinkedList<Vertex>();
@@ -184,7 +187,7 @@ public class Graph {
 			explored.add(v);
 			Set<Vertex> neighbors = v.getNeighbors();
 			for (Vertex neighbor : neighbors) {
-				if (!explored.contains(neighbor) || !frontier.contains(neighbor)) {
+				if (!explored.contains(neighbor) && !frontier.contains(neighbor)) {
 					if (neighbor.equals(vertex2)) {
 						return v.getDistance() + 1;
 					}

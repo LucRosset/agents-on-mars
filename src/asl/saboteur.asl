@@ -12,9 +12,31 @@ is_attack_goal :- jia.is_attack_goal.
 			!select_saboteur_goal.
 
 +!select_saboteur_goal
+	:	is_call_help_goal & step(S)
+		<-	jia.get_repairers(Agents);
+				!init_goal(call_help(Agents));
+				+need_help;
+				!alert_saboteur;
+				!!select_saboteur_goal.
+
++!select_saboteur_goal
+	:	is_not_need_help_goal
+	<-	jia.get_repairers(Agents);
+			!init_goal(send_not_need_help(Agents));
+			-need_help;
+			!!select_saboteur_goal.
+
++!select_saboteur_goal
 	:	is_energy_goal
 	<-	!init_goal(be_at_full_charge);
 			!!select_saboteur_goal.
+
++!select_explorer_goal
+	:	is_disabled_goal & step(S)
+	<-	.print("Moving to closest repairer.");
+			jia.closer_repairer(Pos);
+			!init_goal(move_closer_to_repairer(Pos));
+			!!select_explorer_goal.
 
 +!select_saboteur_goal
 	: is_attack_goal

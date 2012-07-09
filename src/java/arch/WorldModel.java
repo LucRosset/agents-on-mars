@@ -55,7 +55,7 @@ public class WorldModel {
 				String vertexName = percept.getTerm(0).toString();
 				int id = Integer.parseInt(vertexName.replace("vertex", ""));
 				int vValue = (int) ((NumberTerm) percept.getTerm(1)).solve();
-				if (graph.getVertexValue(id) != vValue) {
+				if (graph.getVertexValue(id) != vValue || vValue == 1) {
 					graph.addVertexValue(id, vValue);
 					newPercepts.add(percept);
 				}

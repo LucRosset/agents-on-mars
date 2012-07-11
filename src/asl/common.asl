@@ -13,7 +13,7 @@ is_disabled_goal	:- health(0) & need_help.
 is_not_need_help_goal	:- health(X) & maxHealth(X) & need_help.
 
 
-/* general plans */
+/* General plans */
 
 // the following plan is used to send only one action each cycle
 +!do_and_wait_next_step(Act)
@@ -45,49 +45,7 @@ is_not_need_help_goal	:- health(X) & maxHealth(X) & need_help.
 
 
 
-/* temporary plans */
-
-+!select_goal
-	:	is_call_help_goal & step(S)
-		<-	jia.get_repairers(Agents);
-				!init_goal(call_help(Agents));
-				+need_help;
-				!alert_saboteur;
-				!!select_goal.
-
-+!select_goal
-	:	is_not_need_help_goal
-	<-	jia.get_repairers(Agents);
-			!init_goal(send_not_need_help(Agents));
-			-need_help;
-			!!select_goal.
-
-+!select_goal
-	:	is_energy_goal
-	<-	!init_goal(be_at_full_charge);
-			!!select_goal.
-
-+!select_goal
-	:	is_disabled_goal & step(S)
-	<-	.print("Moving to closest repairer.");
-			jia.closer_repairer(Pos);
-			!init_goal(move_closer_to_repairer(Pos));
-			!!select_goal.
-
-+!select_goal
-	:	is_move_goal
-	<-	!init_goal(move_to_target);
-			!!select_goal.
-
-+!select_goal
-	:	is_wait_goal & step(S)
-	<-	.print("waiting next step");
-			!wait_next_step(S);
-			!!select_goal.
-
-+!select_goal
-	<- 	!init_goal(random_walk);
-			!!select_goal.
+/* Plans */
 			
 +!call_help([X|TAg])
 	: .my_name(Me)

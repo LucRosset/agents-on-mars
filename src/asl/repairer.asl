@@ -51,13 +51,6 @@ is_repair_goal			:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos)
 			!!select_repairer_goal.
 
 +!select_repairer_goal
-	:	is_disabled_goal & step(S)
-	<-	.print("Moving to closest repairer.");
-			jia.closer_repairer(Pos);
-			!init_goal(move_closer_to_repairer(Pos));
-			!!select_repairer_goal.
-
-+!select_repairer_goal
 	:	is_help_goal
 	<-	.findall(X, need_help(X), Agents);
 			jia.closer_agent(Agents,Ag,Pos);
@@ -69,6 +62,13 @@ is_repair_goal			:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos)
 	<-	jia.agent_position(Ag,Pos);
 			jia.move_to_target(X,Pos,NextPos);
 			!do_and_wait_next_step(goto(NextPos));
+			!!select_repairer_goal.
+
++!select_repairer_goal
+	:	is_disabled_goal & step(S)
+	<-	.print("Moving to closest repairer.");
+			jia.closer_repairer(Pos);
+			!init_goal(move_closer_to_repairer(Pos));
 			!!select_repairer_goal.
 
 +!select_repairer_goal

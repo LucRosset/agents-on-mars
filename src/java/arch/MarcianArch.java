@@ -101,7 +101,7 @@ public class MarcianArch extends CAgentArch {
 		String action = actionExec.getActionTerm().getFunctor();
 		if (action.equals("skip") || action.equals("goto") || action.equals("probe")
 				|| action.equals("survey") || action.equals("buy") || action.equals("recharge")
-				|| action.equals("attack") || action.equals("repair")) {
+				|| action.equals("attack") || action.equals("repair") || action.equals("parry")) {
 			boolean result = env.executeAction(this.getAgName(), actionExec.getActionTerm());
 			actionExec.setResult(result);
 			if (result) {

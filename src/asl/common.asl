@@ -11,7 +11,7 @@ is_wait_goal	 					:- target(X) & jia.is_at_target(X).
 is_call_help_goal 			:- health(0) & not need_help.
 is_disabled_goal				:- health(0) & need_help.
 is_not_need_help_goal		:- health(X) & maxHealth(X) & need_help.
-is_parry_goal 					:- position(X) & jia.has_saboteur_at(X).
+is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 
 /* General plans */
 
@@ -45,15 +45,33 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X).
 
 
 
-/* Plans */
-			
-+!call_help([X|TAg])
+/* Common Action Plans */
+
+/* call help */
++!call_help
+	<-	jia.get_repairers(Agents);
+			!send_help(Agents);
+			+need_help;
+			!alert_saboteur.
+
++!send_help([X|TAg])
 	: .my_name(Me)
 	<-	.print("sending need_help to ",X);
  	   	.send(X,tell,need_help(Me));
- 	   	!call_help(TAg).
-+!call_help([]).
+ 	   	!send_help(TAg).
++!send_help([]).
 
++!alert_saboteur
+	: position(X) & jia.has_unique_opponent_at(X,Ag)
+	<-	.broadcast(tell,saboteur(Ag,X)).
++!alert_saboteur.
+
+
+/* not need help */
++!not_need_help
+	<-	jia.get_repairers(Agents);
+			!send_not_need_help(Agents);
+			-need_help.
 
 +!send_not_need_help([X|TAg])
 	: .my_name(Me)
@@ -62,10 +80,7 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X).
  	   	!send_not_need_help(TAg).
 +!send_not_need_help([]).
 
-+!alert_saboteur
-	: position(X) & jia.has_unique_opponent_at(X,Ag)
-	<-	.broadcast(tell,saboteur(Ag,X)).
-+!alert_saboteur.
+
 
 +!move_closer_to_repairer("neighbor")
 	:	step(S)

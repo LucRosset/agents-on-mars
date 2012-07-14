@@ -12,18 +12,13 @@
 
 
 +!select_inspector_goal
-	:	is_call_help_goal & step(S)
-		<-	jia.get_repairers(Agents);
-				!init_goal(call_help(Agents));
-				+need_help;
-				!alert_saboteur;
+	:	is_call_help_goal
+		<-	!init_goal(call_help);
 				!!select_inspector_goal.
 
 +!select_inspector_goal
 	:	is_not_need_help_goal
-	<-	jia.get_repairers(Agents);
-			!init_goal(send_not_need_help(Agents));
-			-need_help;
+	<-	!init_goal(not_need_help);
 			!!select_inspector_goal.
 
 +!select_inspector_goal

@@ -146,3 +146,8 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 			!do_and_wait_next_step(goto(NextPos)).
 -!move_to_target[error(I),error_msg(M)]
 	<-	.print("failure in move_to_target! ",I,": ",M).
+
+/* wait plan */
++!wait
+	: step(S)
+	<-	!wait_next_step(S).

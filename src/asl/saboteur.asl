@@ -54,9 +54,8 @@ is_attack_repairer_goal	:-	jia.found_active_repairer.
 			!!select_saboteur_goal.
 
 +!select_saboteur_goal
-	:	is_wait_goal & step(S)
-	<-	.print("waiting next step");
-			!wait_next_step(S);
+	:	is_wait_goal
+	<-	!init_goal(wait);
 			!!select_saboteur_goal.
 
 +!select_saboteur_goal

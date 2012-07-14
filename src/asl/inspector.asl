@@ -42,9 +42,8 @@
 			!!select_inspector_goal.
 
 +!select_inspector_goal
-	:	is_wait_goal & step(S)
-	<-	.print("waiting next step");
-			!wait_next_step(S);
+	:	is_wait_goal
+	<-	!init_goal(wait);
 			!!select_inspector_goal.
 
 +!select_inspector_goal

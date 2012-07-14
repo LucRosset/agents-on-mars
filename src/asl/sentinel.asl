@@ -29,10 +29,8 @@
 			!!select_sentinel_goal.
 
 +!select_sentinel_goal
-	:	is_disabled_goal & step(S)
-	<-	.print("Moving to closest repairer.");
-			jia.closer_repairer(Pos);
-			!init_goal(move_closer_to_repairer(Pos));
+	:	is_disabled_goal
+	<-	!init_goal(go_to_repairer);
 			!!select_sentinel_goal.
 
 +!select_sentinel_goal

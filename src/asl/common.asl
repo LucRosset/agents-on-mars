@@ -47,6 +47,16 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 
 /* Common Action Plans */
 
+/* plans for energy */
++!be_at_full_charge 
+    : energy(MyE) & maxEnergy(M) & MyE > M*0.9 // I am full, nothing to do
+   <- .print("Charged at ",MyE).
++!be_at_full_charge 
+    : energy(MyE)
+   <- .print("My energy is ",MyE,", recharging");
+      !do_and_wait_next_step(recharge). // otherwise, recharge
+
+
 /* call help */
 +!call_help
 	<-	jia.get_repairers(Agents);
@@ -81,6 +91,10 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 +!send_not_need_help([]).
 
 
+/* go to repairer */
++!go_to_repairer
+	<-	jia.closer_repairer(Pos);
+			!move_closer_to_repairer(Pos).
 
 +!move_closer_to_repairer("neighbor")
 	:	step(S)
@@ -101,6 +115,7 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 	: position(X)
 	<-	jia.move_to_target(X,Pos,NextPos);
 			!do_and_wait_next_step(goto(NextPos)).
+
 
 /* parry plan */
 +!parry

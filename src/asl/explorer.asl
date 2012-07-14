@@ -28,10 +28,8 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
 			!!select_explorer_goal.
 
 +!select_explorer_goal
-	:	is_disabled_goal & step(S)
-	<-	.print("Moving to closest repairer.");
-			jia.closer_repairer(Pos);
-			!init_goal(move_closer_to_repairer(Pos));
+	:	is_disabled_goal
+	<-	!init_goal(go_to_repairer);
 			!!select_explorer_goal.
 
 +!select_explorer_goal
@@ -67,17 +65,6 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
 -!select_explorer_goal[error(I),error_msg(M)]
 	<-	.print("failure in select_explorer_goal! ",I,": ",M).
 
-
-
-/* Plans for energy */
-
-+!be_at_full_charge 
-    : energy(MyE) & maxEnergy(M) & MyE > M*0.9 // I am full, nothing to do
-   <- .print("Charged at ",MyE).
-+!be_at_full_charge 
-    : energy(MyE)
-   <- .print("My energy is ",MyE,", recharging");
-      !do_and_wait_next_step(recharge). // otherwise, recharge
 
 
 /* Probe plans */

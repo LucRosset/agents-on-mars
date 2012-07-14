@@ -73,25 +73,6 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
    <- .print("Probing my location");
       !do_and_wait_next_step(probe).
 
-/* Buy battery */
-
-+!buy(X) 
-    : money(M)
-   <- .print("I am going to buy ",X,"! My money is ",M);
-      !do_and_wait_next_step(buy(X)).
-
-
-/* Random walk plans */
-
-+!random_walk 
-    : position(MyV) // my location
-   <- //jia.random_walk(MyV,Target);
-   		jia.least_visited_neighbor(MyV,Target);
-   		!do_and_wait_next_step(goto(Target)).
-
--!random_walk[error(I),error_msg(M)]
-	<-	.print("failure in random_walk! ",I,": ",M).
-
 
 /* Agents coordination plans */
 
@@ -110,16 +91,6 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
 
 -!send_target[error(I),error_msg(M)]
 	<-	.print("failure in send_target! ",I,": ",M).
-
-
-/* Move to taget plans */
-
-+!move_to_target
-	:	target(Y) & position(X)
-	<-	jia.move_to_target(X,Y,NextPos);
-			!do_and_wait_next_step(goto(NextPos)).
--!move_to_target[error(I),error_msg(M)]
-	<-	.print("failure in move_to_target! ",I,": ",M).
 
 
 /* Move to not probed */

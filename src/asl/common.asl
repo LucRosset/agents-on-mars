@@ -120,3 +120,29 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 /* parry plan */
 +!parry
 	<-	!do_and_wait_next_step(parry).
+
+
+/* buy battery */
++!buy(X) 
+    : money(M)
+   <- .print("I am going to buy ",X,"! My money is ",M);
+      !do_and_wait_next_step(buy(X)).
+
+
+/* random walk plans */
++!random_walk 
+    : position(MyV) // my location
+   <- //jia.random_walk(MyV,Target);
+   		jia.least_visited_neighbor(MyV,Target);
+   		!do_and_wait_next_step(goto(Target)).
+-!random_walk[error(I),error_msg(M)]
+	<-	.print("failure in random_walk! ",I,": ",M).
+
+
+/* move to taget plans */
++!move_to_target
+	:	target(Y) & position(X)
+	<-	jia.move_to_target(X,Y,NextPos);
+			!do_and_wait_next_step(goto(NextPos)).
+-!move_to_target[error(I),error_msg(M)]
+	<-	.print("failure in move_to_target! ",I,": ",M).

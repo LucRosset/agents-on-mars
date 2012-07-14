@@ -2,7 +2,7 @@
 
 /* Initial beliefs and rules */
 
-is_parry_goal 					:- 	position(X) & jia.has_saboteur_at(X).
+
 
 // conditions for goal selection
 
@@ -58,8 +58,3 @@ is_parry_goal 					:- 	position(X) & jia.has_saboteur_at(X).
 +!select_sentinel_goal
 	<- 	!init_goal(random_walk);
 			!!select_sentinel_goal.
-
-/* parry plan */
-
-+!parry
-	<-	!do_and_wait_next_step(parry).

@@ -4,14 +4,14 @@
 /* Initial beliefs and rules */
 
 // conditions for goal selection
-is_energy_goal :- energy(MyE) & maxEnergy(Max) & MyE < Max/3.
-is_buy_goal    :- money(M) & M >= 10.
-is_move_goal	 :- target(X) & not jia.is_at_target(X).
-is_wait_goal	 :- target(X) & jia.is_at_target(X).
-is_call_help_goal :- health(0) & not need_help.
-is_disabled_goal	:- health(0) & need_help.
-is_not_need_help_goal	:- health(X) & maxHealth(X) & need_help.
-
+is_energy_goal 					:- energy(MyE) & maxEnergy(Max) & MyE < Max/3.
+is_buy_goal    					:- money(M) & M >= 10.
+is_move_goal	 					:- target(X) & not jia.is_at_target(X).
+is_wait_goal	 					:- target(X) & jia.is_at_target(X).
+is_call_help_goal 			:- health(0) & not need_help.
+is_disabled_goal				:- health(0) & need_help.
+is_not_need_help_goal		:- health(X) & maxHealth(X) & need_help.
+is_parry_goal 					:- position(X) & jia.has_saboteur_at(X).
 
 /* General plans */
 
@@ -86,3 +86,7 @@ is_not_need_help_goal	:- health(X) & maxHealth(X) & need_help.
 	: position(X)
 	<-	jia.move_to_target(X,Pos,NextPos);
 			!do_and_wait_next_step(goto(NextPos)).
+
+/* parry plan */
++!parry
+	<-	!do_and_wait_next_step(parry).

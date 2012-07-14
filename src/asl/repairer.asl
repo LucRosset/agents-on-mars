@@ -51,6 +51,11 @@ is_repair_goal			:-	help_target(Ag) & jia.agent_position(Ag,Pos) & position(Pos)
 			!!select_repairer_goal.
 
 +!select_repairer_goal
+	:	is_parry_goal
+	<-	!init_goal(parry);
+			!!select_repairer_goal.
+
++!select_repairer_goal
 	:	is_help_goal
 	<-	.findall(X, need_help(X), Agents);
 			jia.closer_agent(Agents,Ag,Pos);

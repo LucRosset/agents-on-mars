@@ -40,6 +40,11 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
 			!!select_explorer_goal.
 
 +!select_explorer_goal
+	: is_parry_goal
+	<-	!init_goal(random_walk);
+			!!select_explorer_goal.
+
++!select_explorer_goal
 	: is_probe_goal
 	<-	!init_goal(probe);
 			!!select_explorer_goal.

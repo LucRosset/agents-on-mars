@@ -39,6 +39,11 @@
 			!!select_inspector_goal.
 
 +!select_inspector_goal
+	: is_parry_goal
+	<- 	!init_goal(random_walk);
+			!!select_inspector_goal.
+
++!select_inspector_goal
 	:	is_move_goal
 	<-	!init_goal(move_to_target);
 			!!select_inspector_goal.

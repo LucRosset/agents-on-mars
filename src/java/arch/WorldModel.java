@@ -365,7 +365,8 @@ public class WorldModel {
 		for (Vertex v : notColoredVertices) {
 			boolean existsFrontier = true;
 			for (Entity e : opponents.values()) {
-				if (!graph.existsFrontier(v, e.getVertex())) {
+				if (!e.getStatus().equals(Percept.STATUS_DISABLED)
+						&& !graph.existsFrontier(v, e.getVertex())) {
 					existsFrontier = false;
 				}
 			}

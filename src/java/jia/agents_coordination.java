@@ -8,6 +8,8 @@ import jason.asSyntax.ListTerm;
 import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.Term;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,6 +47,11 @@ public class agents_coordination extends DefaultInternalAction {
 			}
 
 			List<Vertex> zoneNeighbors = model.getZoneNeighbors(bestZone);
+
+			// order neighbors by vertex value
+			VertexComparator comparator = new VertexComparator();
+			Collections.sort(zoneNeighbors, comparator);
+
 			List<Vertex> bestNeighbors = model.getBestZoneNeighbors(zoneNeighbors);
 			zoneNeighbors.removeAll(bestNeighbors);
 
@@ -144,5 +151,22 @@ public class agents_coordination extends DefaultInternalAction {
 			}
 			return un.unifies(terms[0], agents) & un.unifies(terms[1], positions);
 		}
+	}
+
+	public class VertexComparator implements Comparator<Vertex>{
+
+		@Override
+		public int compare(Vertex o1, Vertex o2) {
+			int value1 = o1.getValue();
+			int value2 = o2.getValue();
+			if (value1 < value2) {
+				return 1;
+			} else if (value1 > value2) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
+		
 	}
 }

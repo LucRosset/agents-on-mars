@@ -3,6 +3,11 @@ package model;
 import env.Percept;
 import model.graph.Vertex;
 
+/**
+ * Represents an opponent or a coworker.
+ * 
+ * @author mafranko
+ */
 public class Entity {
 
 	private String name;
@@ -31,6 +36,16 @@ public class Entity {
 		this.status = status;
 	}
 
+	/**
+	 * Updates the entity's internal values (energy, health, strengt and visibility).
+	 * 
+	 * @param entityEnergy the energy.
+	 * @param entityMaxEnergy the max energy.
+	 * @param entityHealth the health.
+	 * @param entityMaxHealth the max health.
+	 * @param entityStrenght the strenght.
+	 * @param entityVisibility the visibility range.
+	 */
 	public void update(int entityEnergy, int entityMaxEnergy, int entityHealth,
 			int entityMaxHealth, int entityStrenght, int entityVisibility) {
 		this.energy = entityEnergy;

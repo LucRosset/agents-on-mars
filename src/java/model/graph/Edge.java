@@ -7,8 +7,8 @@ package model.graph;
  */
 public class Edge {
 
-	private int v1;
-	private int v2;
+	private int v1;		// the vertex id
+	private int v2;		// the other vertex id
 
 	public Edge(int v1, int v2) {
 		if (v1 < v2) {

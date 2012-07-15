@@ -14,7 +14,7 @@ import model.graph.Graph;
 import model.graph.Vertex;
 
 /**
- * Class used to model the scenario.
+ * Class used to model the scenario (for an agent view).
  * 
  * @author mafranko
  */

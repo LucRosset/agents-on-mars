@@ -12,22 +12,24 @@ import env.Percept;
  */
 public class Vertex {
 
+	// colors used on the agents coordination algorithm
 	public final static int BLUE = 1;	// my color
 	public final static int WHITE = 0;
 	public final static int RED = -1;	// opponents color
 
+	// vertex's properties
 	private int id;
 	private String team = Percept.TEAM_UNKNOWN;
 	private int value = 1;
-	private int color = WHITE;
-
 	private boolean probed = false;
+	private Set<Vertex> neighbors;
 
-	private int visited = 0;
+	private int visited = 0;	// indicates how many times this vertex was visited by the agent
+	private int color = WHITE;	// used on the agents coordination algorithm
+
+	// attributes used on the distance and path algorithms
 	private int distance = 0;
 	private Vertex parent = null;
-
-	private Set<Vertex> neighbors;
 
 	public Vertex(int id, String team) {
 		this.id = id;

@@ -1,5 +1,10 @@
 package env;
 
+/**
+ * Defines some constants used in the communication with the server or between the agents.
+ * 
+ * @author mafranko
+ */
 public class Percept {
 
 	public final static String edges = "edges";

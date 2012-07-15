@@ -42,7 +42,10 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
 		super();
 	}
 
-	/** Called before the MAS execution with the args informed in .mas2j */
+	/**
+	 * Called before the MAS execution with the args informed in .mas2j.
+	 * Connects to the massim server.
+	 */
     @Override
     public void init(String[] args) {
     	super.init(args);
@@ -91,7 +94,9 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
 		}
     }
 
-    // method of AgentListener interface
+    /**
+     * Handler for percepts received from the server.
+     */
 	@Override
 	public void handlePercept(String agent, Percept percept) {
 		try {
@@ -102,6 +107,10 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
         informAgsEnvironmentChanged(agent); // wake up the agent
 	}
 
+	/**
+	 * Returns percepts for an agent. A full copy of both common and agent's percepts lists
+	 * is returned. It returns null if the agent's perception doesn't changed since last call. 
+	 */
 	@Override
     public List<Literal> getPercepts(String agName) {
         List<Literal> percepts = super.getPercepts(agName);  
@@ -124,6 +133,9 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
         return percepts;
     }
 
+	/**
+	 * Executes an action on the environment.
+	 */
     @Override
     public boolean executeAction(String agName, Structure action) {
         if (ei == null) {
@@ -151,7 +163,9 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
         return false;
     }
 
-    /** Called before the end of MAS execution */
+    /**
+     * Called before the end of MAS execution to close the connection to the massim server.
+     */
     @Override
     public void stop() {
         if (ei != null) {
@@ -168,7 +182,7 @@ public class MarsEnv extends CartagoEnvironment implements AgentListener {
     /**
 	 * Get the instance of this environment.
 	 * 
-	 * @return
+	 * @return the instance.
 	 */
 	public static MarsEnv getInstance(){
 		return instance;

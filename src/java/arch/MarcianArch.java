@@ -18,12 +18,20 @@ import env.Percept;
 
 /**
  * Common architecture for the agents.
+ * It extends the Cartago architecture to adds the EIS environment. 
  * 
  * @author mafranko
  */
 public class MarcianArch extends CAgentArch {
 
+	/**
+	 * The EIS environment.
+	 */
 	private MarsEnv env;
+
+	/**
+	 * The agent's world model.
+	 */
 	private WorldModel model;
 
 	private Logger logger;
@@ -35,6 +43,11 @@ public class MarcianArch extends CAgentArch {
 		model = new WorldModel();
 	}
 
+	/**
+	 * Perceives the Cartago and the EIS environments.
+	 * It gets the EIS perceptions and updates the world model. Only relevant percepts are
+	 * leaved in the list of perception for the agent.
+	 */
 	@Override
     public List<Literal> perceive() {
         super.perceive();
@@ -42,6 +55,7 @@ public class MarcianArch extends CAgentArch {
 //        if (!eisPercepts.isEmpty()) {
 //        	logger.info("[" + getAgName() + "] Percepts: " + eisPercepts);
 //        }
+        // updates the world model with the EIS percepts
         eisPercepts = model.update(eisPercepts);
         for (Literal percept : eisPercepts) {
         	try {
@@ -96,9 +110,13 @@ public class MarcianArch extends CAgentArch {
         return null;
     }
 
+	/**
+	 * Sends the action to the Cartago or EIS environments.
+	 */
 	@Override
 	public void act(ActionExec actionExec, List<ActionExec> feedback) {
 		String action = actionExec.getActionTerm().getFunctor();
+		// EIS actions
 		if (action.equals("skip") || action.equals("goto") || action.equals("probe")
 				|| action.equals("survey") || action.equals("buy") || action.equals("recharge")
 				|| action.equals("attack") || action.equals("repair") || action.equals("parry")
@@ -111,11 +129,16 @@ public class MarcianArch extends CAgentArch {
 			} else {
 				notifyActionFailure(actionExec, null, "Failled to performe the action: " + action);
 			}
+		// Cartago actions
 		} else {
 			super.act(actionExec, feedback);
 		}
 	}
 
+	/**
+	 * Reads the agent's mailbox and updates the world model. Only relevant messages are
+	 * leaved in the list of perception for the agent. 
+	 */
 	@Override
     public void checkMail() {
 		super.checkMail();
@@ -135,7 +158,7 @@ public class MarcianArch extends CAgentArch {
     				|| p.equals("visibleVertex") || p.equals("probedVertex")
     				|| p.equals("surveyedEdge") || p.equals("saboteur")
     				|| p.equals("inspectedEntity")) {
-				im.remove();
+				im.remove();	// removes the percept from the mailbox
 			}
 		}
 

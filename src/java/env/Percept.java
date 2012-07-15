@@ -11,6 +11,7 @@ public class Percept {
 
 	public final static String probedVertex = "probedVertex";
 	public final static String surveyedEdge = "surveyedEdge";
+	public final static String inspectedEntity = "inspectedEntity";
 
 	public final static String position = "position";
 
@@ -19,6 +20,7 @@ public class Percept {
 
 	public final static String STATUS_UNKNOWN = "unknown";
 	public final static String STATUS_DISABLED = "disabled";
+	public final static String STATUS_NORMAL = "normal";
 
 	public final static String ROLE_UNKNOWN = "unknown";
 

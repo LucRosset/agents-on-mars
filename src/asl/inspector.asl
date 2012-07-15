@@ -3,6 +3,8 @@
 /* Initial beliefs and rules */
 
 // conditions for goal selection
+is_inspect_goal	:- jia.is_inspect_goal.
+
 
 /* Initial goals */
 
@@ -42,6 +44,11 @@
 			!!select_inspector_goal.
 
 +!select_inspector_goal
+	: is_inspect_goal
+	<- 	!init_goal(inspect);
+			!!select_inspector_goal.
+
++!select_inspector_goal
 	:	is_buy_goal
 	<-	!init_goal(inspector_buy);
 			!!select_inspector_goal.
@@ -55,6 +62,10 @@
 	<- 	!init_goal(random_walk);
 			!!select_inspector_goal.
 
+
+/* Inspect plans */
++!inspect
+	<-	!do_and_wait_next_step(inspect).
 
 /* Buy plans */
 +!inspector_buy

@@ -81,7 +81,7 @@ is_attack_repairer_goal	:-	jia.found_active_repairer.
 			jia.move_to_target(X,Pos,NextPos);
 			!do_and_wait_next_step(goto(NextPos)).
 
-+!attack_saboteur
++!attack_repairer
 	:	position(X)
 	<-	jia.closer_opponent("repairer",Pos);
 			jia.move_to_target(X,Pos,NextPos);

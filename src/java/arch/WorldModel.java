@@ -156,6 +156,45 @@ public class WorldModel {
 				}
 				saboteur.setVertex(saboteurVtx);
 				break;
+			case Percept.inspectedEntity:
+				String entityName = percept.getTerm(0).toString();
+				String entityTeam = percept.getTerm(1).toString();
+				entityTeam = entityTeam.replaceAll("\"", "");
+				if (entityTeam.equals(myTeam)) {
+					break;
+				}
+				String entityRole = percept.getTerm(2).toString();
+				entityRole = entityRole.replaceAll("\"", "");
+				String entityVertex = percept.getTerm(3).toString();
+				entityVertex = entityVertex.replace("vertex", "");
+				int entityPos = Integer.parseInt(entityVertex);
+				int entityEnergy =  (int) ((NumberTerm) percept.getTerm(4)).solve();
+				int maxEnergy =  (int) ((NumberTerm) percept.getTerm(5)).solve();
+				int entityHealth =  (int) ((NumberTerm) percept.getTerm(6)).solve();
+				int maxHealth =  (int) ((NumberTerm) percept.getTerm(7)).solve();
+				int entityStrenght =  (int) ((NumberTerm) percept.getTerm(8)).solve();
+				int entityVisibility =  (int) ((NumberTerm) percept.getTerm(9)).solve();
+				Entity entity =  opponents.get(entityName);
+				if (null == entity) {
+					entity = new Entity(entityName);
+					opponents.put(entityName, entity);
+				}
+				entity.setInspected(true);
+				entity.setRole(entityRole);
+				entity.setTeam(entityTeam);
+				if (null == entity.getVertex() || entity.getVertex().getId() != entityPos) {
+					Vertex entityVtx = graph.getVertices().get(entityPos);
+					if (null == entityVtx) {
+						entityVtx = new Vertex(entityPos);
+						graph.addVertex(entityVtx);
+					}
+					entity.setVertex(entityVtx);
+					newPercepts.add(percept);
+				}
+				entity.update(entityEnergy, maxEnergy, entityHealth, maxHealth,
+						entityStrenght, entityVisibility);
+				newPercepts.add(percept);
+				break;
 			default:
 				newPercepts.add(percept);
 			}
@@ -402,6 +441,15 @@ public class WorldModel {
 		return false;
 	}
 
+	public boolean hasOpponentOnVertex(Vertex v) {
+		for (Entity opponent : opponents.values()) {
+			if (opponent.getVertex().equals(v)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean hasActiveOpponentOnVertex(int v) {
 		for (Entity opponent : opponents.values()) {
 			if (opponent.getVertex().getId() == v
@@ -440,7 +488,7 @@ public class WorldModel {
 		for (Entity opponent : opponents.values()) {
 			if (opponent.getVertex().getId() == v
 					&& !opponent.getStatus().equals(Percept.STATUS_DISABLED)
-					&& !opponent.getRole().equals("saboteur")) {
+					&& opponent.getRole().equals("saboteur")) {
 				return true;
 			}
 		}
@@ -451,7 +499,7 @@ public class WorldModel {
 		for (Entity opponent : opponents.values()) {
 			if (opponent.getVertex().equals(v)
 					&& !opponent.getStatus().equals(Percept.STATUS_DISABLED)
-					&& !opponent.getRole().equals("saboteur")) {
+					&& opponent.getRole().equals("saboteur")) {
 				return true;
 			}
 		}

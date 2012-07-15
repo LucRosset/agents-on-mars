@@ -11,6 +11,14 @@ public class Entity {
 	private String status = Percept.STATUS_UNKNOWN;
 	private String role = Percept.ROLE_UNKNOWN;
 
+	private boolean inspected = false;
+	private int energy;
+	private int maxEnergy;
+	private int health;
+	private int maxHealth;
+	private int strenght;
+	private int visibility;
+
 	public Entity(String name) {
 		this.name = name;
 		this.vertex = new Vertex(-1);
@@ -21,6 +29,21 @@ public class Entity {
 		this.team = team;
 		this.vertex = vertex;
 		this.status = status;
+	}
+
+	public void update(int entityEnergy, int entityMaxEnergy, int entityHealth,
+			int entityMaxHealth, int entityStrenght, int entityVisibility) {
+		this.energy = entityEnergy;
+		if (energy == 0) {
+			status = Percept.STATUS_DISABLED;
+		} else {
+			status = Percept.STATUS_NORMAL;
+		}
+		this.maxEnergy = entityMaxEnergy;
+		this.health = entityHealth;
+		this.maxHealth = entityMaxHealth;
+		this.strenght = entityStrenght;
+		this.visibility = entityVisibility;
 	}
 
 	/* Getters and Setters */
@@ -62,7 +85,63 @@ public class Entity {
 	}
 
 	public void setRole(String role) {
-		this.role = role;
+		this.role = role.toLowerCase();
+	}
+
+	public boolean isInspected() {
+		return inspected;
+	}
+
+	public void setInspected(boolean inspected) {
+		this.inspected = inspected;
+	}
+
+	public int getEnergy() {
+		return energy;
+	}
+
+	public void setEnergy(int energy) {
+		this.energy = energy;
+	}
+
+	public int getMaxEnergy() {
+		return maxEnergy;
+	}
+
+	public void setMaxEnergy(int maxEnergy) {
+		this.maxEnergy = maxEnergy;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+
+	public int getStrenght() {
+		return strenght;
+	}
+
+	public void setStrenght(int strenght) {
+		this.strenght = strenght;
+	}
+
+	public int getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(int visibility) {
+		this.visibility = visibility;
 	}
 
 	@Override

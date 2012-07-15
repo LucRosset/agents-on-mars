@@ -104,14 +104,12 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 
 +!move_closer_to_repairer("none")
 	: is_move_goal
-	<- 	!init_goal(move_to_target);
-			!!select_goal.
+	<- 	!init_goal(move_to_target).
 +!move_closer_to_repairer("none")
 	:	is_wait_goal & step(S)
 	<-	!wait_next_step(S).
 +!move_closer_to_repairer("none")
-	<-	!init_goal(random_walk);
-			!!select_goal.
+	<-	!init_goal(random_walk).
 
 +!move_closer_to_repairer(Pos)
 	: position(X)

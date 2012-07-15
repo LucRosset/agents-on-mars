@@ -49,7 +49,7 @@ public class MarcianArch extends CAgentArch {
         		String  p = percept.getFunctor();
         		if (p.equals("visibleEdge") || p.equals("visibleEntity")
         				|| p.equals("visibleVertex") || p.equals("probedVertex")
-        				|| p.equals("surveyedEdge")) {
+        				|| p.equals("surveyedEdge") || p.equals("inspectedEntity")) {
 //        			if (null == getTS().getAg().getBB().contains(percept)) {
            			 	Message m = new Message("tell", null, null, percept);
            			 	broadcast(m);
@@ -101,7 +101,8 @@ public class MarcianArch extends CAgentArch {
 		String action = actionExec.getActionTerm().getFunctor();
 		if (action.equals("skip") || action.equals("goto") || action.equals("probe")
 				|| action.equals("survey") || action.equals("buy") || action.equals("recharge")
-				|| action.equals("attack") || action.equals("repair") || action.equals("parry")) {
+				|| action.equals("attack") || action.equals("repair") || action.equals("parry")
+				|| action.equals("inspect")) {
 			boolean result = env.executeAction(this.getAgName(), actionExec.getActionTerm());
 			actionExec.setResult(result);
 			if (result) {
@@ -132,7 +133,8 @@ public class MarcianArch extends CAgentArch {
 
 			if (p.equals("visibleEdge") || p.equals("visibleEntity")
     				|| p.equals("visibleVertex") || p.equals("probedVertex")
-    				|| p.equals("surveyedEdge") || p.equals("saboteur")) {
+    				|| p.equals("surveyedEdge") || p.equals("saboteur")
+    				|| p.equals("inspectedEntity")) {
 				im.remove();
 			}
 		}

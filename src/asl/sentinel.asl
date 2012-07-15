@@ -44,6 +44,11 @@
 			!!select_sentinel_goal.
 
 +!select_sentinel_goal
+	:	is_buy_goal
+	<-	!init_goal(sentinel_buy);
+			!!select_sentinel_goal.
+
++!select_sentinel_goal
 	:	is_wait_goal
 	<-	!init_goal(wait);
 			!!select_sentinel_goal.
@@ -51,3 +56,23 @@
 +!select_sentinel_goal
 	<- 	!init_goal(random_walk);
 			!!select_sentinel_goal.
+
+
+/* Buy plans */
++!sentinel_buy
+	: buy_battery
+	<-	!buy(battery);
+			-buy_battery;
+			+buy_shield.
+
++!sentinel_buy
+	: buy_shield
+	<-	!buy(shield);
+			-buy_shield;
+			+buy_sensor.
+
++!sentinel_buy
+	: buy_sensor
+	<-	!buy(sensor);
+			-buy_sensor;
+			+buy_battery.

@@ -43,13 +43,13 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
 			!!select_explorer_goal.
 
 +!select_explorer_goal
-	:	is_buy_goal
-	<-	!init_goal(buy(battery));
+	:	is_move_goal
+	<-	!init_goal(move_to_target);
 			!!select_explorer_goal.
 
 +!select_explorer_goal
-	:	is_move_goal
-	<-	!init_goal(move_to_target);
+	:	is_buy_goal
+	<-	!init_goal(explorer_buy);
 			!!select_explorer_goal.
 
 +!select_explorer_goal
@@ -99,3 +99,16 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
 	: position(MyV) // my location
 	<- jia.move_to_not_probed(MyV,Target);
 		 !do_and_wait_next_step(goto(Target)).
+
+/* Buy plans */
++!explorer_buy
+	: buy_battery
+	<-	!buy(battery);
+			-buy_battery;
+			+buy_shield.
+
++!explorer_buy
+	: buy_shield
+	<-	!buy(shield);
+			-buy_shield;
+			+buy_battery.

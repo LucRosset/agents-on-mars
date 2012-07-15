@@ -3,9 +3,11 @@
 
 /* Initial beliefs and rules */
 
+buy_battery.
+
 // conditions for goal selection
 is_energy_goal 					:- energy(MyE) & maxEnergy(Max) & MyE < Max/3.
-is_buy_goal    					:- money(M) & M >= 10.
+is_buy_goal    					:- money(M) & M >= 2.
 is_move_goal	 					:- target(X) & not jia.is_at_target(X).
 is_wait_goal	 					:- target(X) & jia.is_at_target(X).
 is_call_help_goal 			:- health(0) & not need_help.
@@ -123,7 +125,7 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 
 
 /* buy battery */
-+!buy(X) 
++!buy(X)
     : money(M)
    <- .print("I am going to buy ",X,"! My money is ",M);
       !do_and_wait_next_step(buy(X)).
@@ -146,6 +148,7 @@ is_parry_goal 					:- position(X) & jia.has_saboteur_at(X) & not health(0).
 			!do_and_wait_next_step(goto(NextPos)).
 -!move_to_target[error(I),error_msg(M)]
 	<-	.print("failure in move_to_target! ",I,": ",M).
+
 
 /* wait plan */
 +!wait

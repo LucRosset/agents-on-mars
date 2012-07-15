@@ -42,6 +42,11 @@
 			!!select_inspector_goal.
 
 +!select_inspector_goal
+	:	is_buy_goal
+	<-	!init_goal(inspector_buy);
+			!!select_inspector_goal.
+
++!select_inspector_goal
 	:	is_wait_goal
 	<-	!init_goal(wait);
 			!!select_inspector_goal.
@@ -49,3 +54,17 @@
 +!select_inspector_goal
 	<- 	!init_goal(random_walk);
 			!!select_inspector_goal.
+
+
+/* Buy plans */
++!inspector_buy
+	: buy_battery
+	<-	!buy(battery);
+			-buy_battery;
+			+buy_shield.
+
++!inspector_buy
+	: buy_shield
+	<-	!buy(shield);
+			-buy_shield;
+			+buy_battery.

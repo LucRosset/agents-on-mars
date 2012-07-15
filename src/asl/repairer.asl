@@ -70,6 +70,11 @@ is_repair_goal						:-	need_help(Ag) & jia.agent_position(Ag,Pos) & position(Pos
 			!!select_repairer_goal.
 
 +!select_repairer_goal
+	:	is_buy_goal
+	<-	!init_goal(repairer_buy);
+			!!select_repairer_goal.
+
++!select_repairer_goal
 	:	is_wait_goal
 	<-	!init_goal(wait);
 			!!select_repairer_goal.
@@ -112,3 +117,17 @@ is_repair_goal						:-	need_help(Ag) & jia.agent_position(Ag,Pos) & position(Pos
 	:	help_target(Ag) & not need_help(Ag)
 	<-	.abolish(help_target(Ag)).
 +!remove_help_target.
+
+
+/* Buy plans */
++!repairer_buy
+	: buy_battery
+	<-	!buy(battery);
+			-buy_battery;
+			+buy_shield.
+
++!repairer_buy
+	: buy_shield
+	<-	!buy(shield);
+			-buy_shield;
+			+buy_battery.

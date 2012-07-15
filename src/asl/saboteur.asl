@@ -54,6 +54,11 @@ is_attack_repairer_goal	:-	jia.found_active_repairer.
 			!!select_saboteur_goal.
 
 +!select_saboteur_goal
+	:	is_buy_goal
+	<-	!init_goal(saboteur_buy);
+			!!select_saboteur_goal.
+
++!select_saboteur_goal
 	:	is_wait_goal
 	<-	!init_goal(wait);
 			!!select_saboteur_goal.
@@ -81,3 +86,23 @@ is_attack_repairer_goal	:-	jia.found_active_repairer.
 	<-	jia.closer_opponent("repairer",Pos);
 			jia.move_to_target(X,Pos,NextPos);
 			!do_and_wait_next_step(goto(NextPos)).
+
+
+/* Buy plans */
++!saboteur_buy
+	: buy_battery
+	<-	!buy(battery);
+			-buy_battery;
+			+buy_sabotage.
+
++!saboteur_buy
+	: buy_sabotage
+	<-	!buy(sabotageDevice);
+			-buy_sabotage;
+			+buy_shield.
+
++!saboteur_buy
+	: buy_shield
+	<-	!buy(shield);
+			-buy_shield;
+			+buy_battery.

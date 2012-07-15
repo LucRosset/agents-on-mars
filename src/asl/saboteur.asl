@@ -54,6 +54,11 @@ is_attack_repairer_goal	:-	jia.found_active_repairer.
 			!!select_saboteur_goal.
 
 +!select_saboteur_goal
+	: is_survey_goal
+	<- 	!init_goal(survey);
+			!!select_saboteur_goal.
+
++!select_saboteur_goal
 	:	is_buy_goal
 	<-	!init_goal(saboteur_buy);
 			!!select_saboteur_goal.

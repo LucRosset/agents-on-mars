@@ -44,6 +44,11 @@
 			!!select_sentinel_goal.
 
 +!select_sentinel_goal
+	: is_survey_goal
+	<- 	!init_goal(survey);
+			!!select_sentinel_goal.
+
++!select_sentinel_goal
 	:	is_buy_goal
 	<-	!init_goal(sentinel_buy);
 			!!select_sentinel_goal.

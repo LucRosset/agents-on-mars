@@ -70,6 +70,11 @@ is_repair_goal						:-	need_help(Ag) & jia.agent_position(Ag,Pos) & position(Pos
 			!!select_repairer_goal.
 
 +!select_repairer_goal
+	: is_survey_goal
+	<- 	!init_goal(survey);
+			!!select_repairer_goal.
+
++!select_repairer_goal
 	:	is_buy_goal
 	<-	!init_goal(repairer_buy);
 			!!select_repairer_goal.

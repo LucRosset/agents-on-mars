@@ -361,9 +361,19 @@ public class Graph {
 
 	public void addEdgeValue(int v1, int v2, int value) {
 		Edge e = new Edge(v1, v2);
-		if (edges.containsKey(e)) {
-			edges.put(e, value);
+		edges.put(e, value);
+		Vertex vertex1 = vertices.get(v1);
+		if (null == vertex1) {
+			vertex1 = new Vertex(v1, Percept.TEAM_UNKNOWN);
+			addVertex(vertex1);
 		}
+		Vertex vertex2 = vertices.get(v2);
+		if (null == vertex2) {
+			vertex2 = new Vertex(v2, Percept.TEAM_UNKNOWN);
+			addVertex(vertex2);
+		}
+		vertex1.addNeighbor(vertex2);
+		vertex2.addNeighbor(vertex1);
 	}
 
 	public void removeVerticesColor() {

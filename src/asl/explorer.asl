@@ -48,6 +48,11 @@ is_probe_goal  :- position(MyV) & not jia.is_probed_vertex(MyV) & role(explorer)
 			!!select_explorer_goal.
 
 +!select_explorer_goal
+	: is_survey_goal
+	<- 	!init_goal(survey);
+			!!select_explorer_goal.
+
++!select_explorer_goal
 	:	is_buy_goal
 	<-	!init_goal(explorer_buy);
 			!!select_explorer_goal.

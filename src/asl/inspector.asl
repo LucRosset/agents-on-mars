@@ -49,6 +49,11 @@ is_inspect_goal	:- jia.is_inspect_goal.
 			!!select_inspector_goal.
 
 +!select_inspector_goal
+	: is_survey_goal
+	<- 	!init_goal(survey);
+			!!select_inspector_goal.
+
++!select_inspector_goal
 	:	is_buy_goal
 	<-	!init_goal(inspector_buy);
 			!!select_inspector_goal.

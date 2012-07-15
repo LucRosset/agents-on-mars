@@ -12,6 +12,10 @@ import arch.MarcianArch;
 import arch.WorldModel;
 
 /**
+ * Path legth.
+ * </p>
+ * Use: jia.path_length(+X,+Y,-D); </br>
+ * Where: X is the start location, Y is the end location and D is the distance.
  * 
  * @author mafranko
  */

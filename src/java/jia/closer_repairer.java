@@ -14,6 +14,14 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Returns the position of the closer repairer coworker.
+ * </p>
+ * Use: jia.closer_repairer(-P); </br>
+ * Where: P is the position of the closer repairer.
+ * 
+ * @author mafranko
+ */
 public class closer_repairer extends DefaultInternalAction {
 
 	private static final long serialVersionUID = 7802609769068834646L;

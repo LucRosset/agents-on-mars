@@ -10,6 +10,14 @@ import jason.asSyntax.ASSyntax;
 import jason.asSyntax.Atom;
 import jason.asSyntax.Term;
 
+/**
+ * Returns the neighbor least visited of the given position.
+ * </p>
+ * Use: jia.least_visited_neighbor(+P,-N); </br>
+ * Where: P is the position and N is the neighbor.
+ * 
+ * @author mafranko
+ */
 public class least_visited_neighbor extends DefaultInternalAction {
 
 	private static final long serialVersionUID = 3980449556511086140L;

@@ -14,6 +14,14 @@ import model.Entity;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Retrieves all repairer coworkers.
+ * </p>
+ * Use: jia.get_repairers(-A); </br>
+ * Where: A is the list of repairers.
+ * 
+ * @author mafranko 
+ */
 public class get_repairers extends DefaultInternalAction {
 
 	private static final long serialVersionUID = -3080118459421331948L;

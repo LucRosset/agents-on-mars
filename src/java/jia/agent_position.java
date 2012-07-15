@@ -10,6 +10,14 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Retrieves the position of the given coworker.
+ * </p>
+ * Use: jia.agent_position(+Ag,-Pos); </br>
+ * Where: Ag is the agent name, and Pos is agent's position (ex: vertex10).
+ * 
+ * @author mafranko
+ */
 public class agent_position extends DefaultInternalAction {
 
 	private static final long serialVersionUID = -1524646971431382627L;

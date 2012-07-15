@@ -1,6 +1,5 @@
 package jia;
 
-
 import jason.asSemantics.DefaultInternalAction;
 import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;
@@ -18,6 +17,15 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Verify which is the team best zone in a determined time and returns a list of
+ * agents and positions to increase that zone.
+ * </p>
+ * Use: jia.agents_coordination(-A,-P); </br>
+ * Where: A is the list of agents and P the list of target positions.
+ * 
+ * @author mafranko
+ */
 public class agents_coordination extends DefaultInternalAction {
 
 	private static final long serialVersionUID = -6858228332440013608L;

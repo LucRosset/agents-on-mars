@@ -15,6 +15,14 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Returns the closer agent and its position given a list of coworkers.
+ * </p>
+ * Use: jia.closer_agent(+Agents,-Ag,-Pos); </br>
+ * Where: Agents is the list of agents, Ag is the closer agent and Pos its position.
+ * 
+ * @author mafranko
+ */
 public class closer_agent extends DefaultInternalAction {
 
 	private static final long serialVersionUID = -1135939414001408876L;

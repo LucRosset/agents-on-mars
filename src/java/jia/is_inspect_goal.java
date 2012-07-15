@@ -8,6 +8,13 @@ import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;
 import jason.asSyntax.Term;
 
+/**
+ * Returns true or false to indicate if there are opponents to be inspected near my position.
+ * </p>
+ * Use: jia.is_inspect_goal; </br>
+ * 
+ * @author mafranko
+ */
 public class is_inspect_goal extends DefaultInternalAction {
 
 	private static final long serialVersionUID = -7144570990733006566L;

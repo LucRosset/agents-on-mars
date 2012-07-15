@@ -13,6 +13,13 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Returns true or false, indicating if was found an active opponent with role of saboteur.
+ * </p>
+ * Use: jia.found_active_saboteur; </br>
+ * 
+ * @author mafranko
+ */
 public class found_active_saboteur extends DefaultInternalAction {
 
 	private static final long serialVersionUID = 4839803790133301621L;

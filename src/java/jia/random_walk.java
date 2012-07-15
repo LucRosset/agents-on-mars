@@ -11,6 +11,10 @@ import arch.MarcianArch;
 import arch.WorldModel;
 
 /**
+ * Retrieves a neighbor of the given position by random.
+ * </p>
+ * Use: jia.random_walk(+P,-N); </br>
+ * Where: P is the position and N is the neighbor.
  * 
  * @author mafranko 
  */

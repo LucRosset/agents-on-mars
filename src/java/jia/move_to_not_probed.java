@@ -14,6 +14,15 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Retrieves the position of a not probed neighbor if there is at least one,
+ * or the position of the least visited neighbor.
+ * </p>
+ * Use: jia.move_to_not_probed(+P,-N); </br>
+ * Where: P is the position and N is the neighbor.
+ * 
+ * @author mafranko
+ */
 public class move_to_not_probed extends DefaultInternalAction {
 
 	private static final long serialVersionUID = -5827900602735423794L;

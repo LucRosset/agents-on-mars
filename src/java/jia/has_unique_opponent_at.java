@@ -9,6 +9,14 @@ import jason.asSyntax.Term;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Returns true or false indicating if has an unique opponent at the given position.
+ * </p>
+ * Use: jia.has_unique_opponent_at(+P);</br>
+ * Where: P is the position.
+ * 
+ * @author mafranko
+ */
 public class has_unique_opponent_at extends DefaultInternalAction {
 
 	private static final long serialVersionUID = -2843424196718445042L;

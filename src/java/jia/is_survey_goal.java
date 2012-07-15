@@ -9,6 +9,13 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Returns true or false to indicate if there are edges not surveyed near my position.
+ * </p>
+ * Use: jia.is_survey_goal; </br>
+ * 
+ * @author mafranko
+ */
 public class is_survey_goal extends DefaultInternalAction {
 
 	private static final long serialVersionUID = 3333738624988187827L;

@@ -9,6 +9,14 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Returns true or false indicating if the agent is the given position.
+ * </p>
+ * Use: jia.is_at_target(+P);
+ * Where: P is the position.
+ * 
+ * @author mafranko
+ */
 public class is_at_target extends DefaultInternalAction {
 
 	private static final long serialVersionUID = 1256025311061772548L;

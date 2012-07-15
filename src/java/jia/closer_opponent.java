@@ -15,6 +15,14 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Returns the position of the closer opponent of the given role.
+ * </p>
+ * Use: jia.closer_opponent(+R,-P); </br>
+ * Where: R is the role and P the position of the closer opponent with this role.
+ * 
+ * @author mafranko
+ */
 public class closer_opponent extends DefaultInternalAction {
 
 	private static final long serialVersionUID = 7802609769068834646L;

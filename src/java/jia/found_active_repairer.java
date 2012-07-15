@@ -13,6 +13,13 @@ import model.graph.Vertex;
 import arch.MarcianArch;
 import arch.WorldModel;
 
+/**
+ * Returns true or false, indicating if was found an active opponent with role of repairer.
+ * </p>
+ * Use: jia.found_active_repairer; </br>
+ * 
+ * @author mafranko
+ */
 public class found_active_repairer extends DefaultInternalAction {
 
 	private static final long serialVersionUID = 4839803790133301621L;

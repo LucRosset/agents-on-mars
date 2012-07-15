@@ -12,6 +12,10 @@ import jason.asSyntax.StringTerm;
 import jason.asSyntax.Term;
 
 /**
+ * Retrieves the next move to achieve a given target.
+ * </p>
+ * Use: jia.move_to_target(+X,+Y,-N); </br>
+ * Where: X is the actual location, Y is the target location and N is the next move (location).
  * 
  * @author mafranko 
  */

@@ -10,6 +10,10 @@ import jason.asSyntax.Atom;
 import jason.asSyntax.Term;
 
 /**
+ * Returns true or false to indicate if the specified position was probed or not.
+ * </p>
+ * Use: jia.is_probed_vertex(+P); </br>
+ * Where: P is the position.
  * 
  * @author mafranko
  */

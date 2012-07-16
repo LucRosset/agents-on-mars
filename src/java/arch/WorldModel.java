@@ -25,7 +25,7 @@ public class WorldModel {
 	private HashMap<String, Entity> opponents;
 	private HashMap<String, Entity> coworkers;
 
-	public final static String myTeam = "A";
+	public final static String myTeam = "B";
 
 	private Vertex myVertex;
 
